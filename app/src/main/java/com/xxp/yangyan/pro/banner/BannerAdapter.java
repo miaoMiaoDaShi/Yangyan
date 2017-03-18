@@ -3,14 +3,15 @@ package com.xxp.yangyan.pro.banner;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
 //轮播图的适配器类
     public class BannerAdapter extends PagerAdapter {
-        List<View> viewList;
+        List<ImageView> viewList;
 
-        public BannerAdapter(List<View> viewList) {
+        public BannerAdapter(List<ImageView> viewList) {
             this.viewList = viewList;
         }
 

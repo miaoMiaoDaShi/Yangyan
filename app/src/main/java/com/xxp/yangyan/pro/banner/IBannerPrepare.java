@@ -1,7 +1,7 @@
 package com.xxp.yangyan.pro.banner;
 
 import android.app.Activity;
-import android.view.View;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface IBannerPrepare {
     Activity getActivity();
 
     //得到BannerView的内部的List<View> 集合   View 可强转ImageView
-    void setBannerViews(List<View> views);
+    void setBannerViews(List<ImageView> views);
 }

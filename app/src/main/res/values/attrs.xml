@@ -8,9 +8,17 @@
     </declare-styleable>
 
     <declare-styleable name="BannerView">
+        <!--图片的数量-->
+        <attr name="banner_count" format="integer"/>
+        <!--指示器 颜色  当前-->
         <attr name="point_full_color" format="color"/>
+        <!--指示器 颜色  为空-->
         <attr name="point_empty_color" format="color"/>
+        <!--  切换时间-->
         <attr name="auto_scroll_time" format="integer"/>
+        <!--  加载时.看到的图片-->
         <attr name="loading_image" format="integer"/>
+        <!--滑动速度,时间-->
+        <attr name="scroll_speed" format="integer"/>
     </declare-styleable>
 </resources>

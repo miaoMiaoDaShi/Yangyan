@@ -61,7 +61,7 @@ public class HomeFragment extends BaseSwipeFragment<HomePresenterImpl>
     @BindView(R.id.home_root)
     RelativeLayout homeRoot;
 
-    private List<View> views;
+    private List<ImageView> views;
 
     private boolean xxp = false;
     //谷歌的刷新空间
@@ -83,11 +83,11 @@ public class HomeFragment extends BaseSwipeFragment<HomePresenterImpl>
         bannerView.setupIbanner(new IBannerPrepare() {
             @Override
             public Activity getActivity() {
-                return getActivity();
+                return HomeFragment.this.getActivity();
             }
 
             @Override
-            public void setBannerViews(List<View> views) {
+            public void setBannerViews(List<ImageView> views) {
                 HomeFragment.this.views = views;
             }
         });
@@ -160,7 +160,7 @@ public class HomeFragment extends BaseSwipeFragment<HomePresenterImpl>
         for (int i = 1; i <= views.size(); i++) {
             GlideUtils.loadImageView(this,
                     MMApi.MY_BASE_URL + urls.get(i - 1),
-                    (ImageView) views.get(i - 1));
+                    views.get(i - 1));
         }
     }
 
