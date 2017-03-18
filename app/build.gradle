@@ -1,0 +1,114 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+android {
+    signingConfigs {
+        Miao {
+            keyAlias 'xiaopengbuxiao'
+            keyPassword 'ZWP1996'
+            storeFile file('E:/key.story')
+            storePassword 'ZWP1996'
+        }
+    }
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId "com.xxp.yangyan"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
+    }
+    configurations {
+        all*.exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    buildTypes {
+        release {
+            minifyEnabled rootProject.ext.android.minifyEnabled
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.Miao
+        }
+    }
+}
+
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+    //photoView
+    maven { url "https://jitpack.io" }
+    //bmob
+    maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+
+}
+//sourceSets{
+//
+//    main{
+//
+//        java.srcDirs=['src/main/java','src/main/java-gen']
+//
+//    }
+//
+//}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    // testCompile 'junit:junit:4.12'
+    compile rootProject.ext.dependencies["butterknife"]
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
+    compile rootProject.ext.dependencies["recyclerview-v7"]
+    //Retrofit2.0
+    compile rootProject.ext.dependencies["retrofit"]
+    compile(rootProject.ext.dependencies["converter-gson"]) {
+        exclude group: 'com.google.code.gson'
+    }
+    compile(rootProject.ext.dependencies["adapter-rxjava"]) {
+        exclude group: 'io.reactivex'
+    }
+    compile rootProject.ext.dependencies["jsoup"]
+    //rxJava
+    //compile 'io.reactivex:rxjava:1.0.14'
+    //compile 'io.reactivex:rxandroid:1.0.1'
+    //log
+    compile rootProject.ext.dependencies["logger"]
+    //Glide
+    compile rootProject.ext.dependencies["glide"]
+    //流式布局
+    compile rootProject.ext.dependencies["flowlayout"]
+    compile rootProject.ext.dependencies["design"]
+    compile rootProject.ext.dependencies["cardview-v7"]
+    //photoView
+    compile rootProject.ext.dependencies["PhotoView"]
+    //alert对话框
+    compile rootProject.ext.dependencies["alerter"]
+    //RxVolley
+    compile(rootProject.ext.dependencies["rxvolley"]) {
+        exclude group: 'io.reactivex'
+        exclude group: 'com.squareup'
+    }
+    //    compile('com.kymjs.rxvolley:okhttp:1.1.4')
+    //            {
+    //                exclude group: 'io.reactivex'
+    //                exclude group: 'com.squareup.okhttp3'
+    //            }
+    //bmob 其中包括了RxJava
+    //可能赵成的包冲突
+    //以下SDK开发者请根据需要自行选择
+    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
+    //3.5.0：请务必查看下面注释[1]
+    compile rootProject.ext.dependencies["bmob-sdk"]
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    compile rootProject.ext.dependencies["http-legacy"]
+    //greenDAO
+    compile rootProject.ext.dependencies["greendao"]
+}

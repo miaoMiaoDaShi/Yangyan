@@ -128,6 +128,7 @@ public class BannerView extends RelativeLayout {
         timer.schedule(timerTask, 0, scroll_time);
     }
 
+
     private void initView() {
         initViewPager();
         initPoint();
