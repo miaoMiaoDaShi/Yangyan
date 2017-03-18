@@ -8,12 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.DownloadManager;
-import com.listener.ProgressListener;
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.adapter.SettingAdapter;
@@ -24,7 +21,6 @@ import com.xxp.yangyan.pro.ui.activity.AboutActivity;
 import com.xxp.yangyan.pro.ui.activity.ImgLIstActivity;
 import com.xxp.yangyan.pro.ui.view.CircleImageView;
 import com.xxp.yangyan.pro.utils.GlideCacheUtil;
-import com.xxp.yangyan.pro.utils.IOUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,12 +143,7 @@ public class MyFragment extends BaseFragment {
     }
 
     private void checkUpdate() {
-        DownloadManager.download(IOUtils.getSDPath(), "夜蝶.mp3", "http://download.firefox.com.cn/releases/mobile/52.0/zh-CN/Firefox-Android-52.0.apk", new ProgressListener() {
-            @Override
-            public void onProgress(long currentPro, long totalPro) {
-                Log.e("下载中", "onProgress: " + currentPro * 100 / totalPro);
-            }
-        });
+
     }
 
     private void clearGildeCache() {

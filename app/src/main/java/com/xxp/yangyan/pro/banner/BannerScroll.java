@@ -1,4 +1,4 @@
-package com.xxp.yangyan.pro.ui.view;
+package com.xxp.yangyan.pro.banner;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

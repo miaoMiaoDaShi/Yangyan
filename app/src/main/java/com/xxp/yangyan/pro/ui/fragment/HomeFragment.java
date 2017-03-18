@@ -1,5 +1,6 @@
 package com.xxp.yangyan.pro.ui.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,14 +17,16 @@ import com.tapadoo.alerter.Alerter;
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.api.MMApi;
+import com.xxp.yangyan.pro.banner.BannerView;
+import com.xxp.yangyan.pro.banner.IBannerPrepare;
 import com.xxp.yangyan.pro.base.BaseSwipeFragment;
 import com.xxp.yangyan.pro.bean.HomeInfo;
 import com.xxp.yangyan.pro.mvp.contract.HomeContract;
 import com.xxp.yangyan.pro.mvp.presenter.HomePresenterImpl;
 import com.xxp.yangyan.pro.ui.activity.ImgLIstActivity;
-import com.xxp.yangyan.pro.ui.view.BannerView;
 import com.xxp.yangyan.pro.utils.APPInfo;
 import com.xxp.yangyan.pro.utils.GlideUtils;
+import com.xxp.yangyan.pro.utils.ToastUtils;
 import com.xxp.yangyan.pro.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -77,8 +80,25 @@ public class HomeFragment extends BaseSwipeFragment<HomePresenterImpl>
     }
 
     private void loadViewPager() {
-        bannerView.setActivity(getActivity());
-        views = bannerView.getBannerView();
+        bannerView.setupIbanner(new IBannerPrepare() {
+            @Override
+            public Activity getActivity() {
+                return getActivity();
+            }
+
+            @Override
+            public void setBannerViews(List<View> views) {
+                HomeFragment.this.views = views;
+            }
+        });
+
+        bannerView.setBannerOnclickListener(new BannerView.OnClickListener() {
+            @Override
+            public void onClick(int position) {
+                ToastUtils.showToast("点击"+position);
+            }
+        });
+
     }
 
     @Override

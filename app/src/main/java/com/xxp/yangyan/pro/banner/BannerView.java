@@ -1,4 +1,4 @@
-package com.xxp.yangyan.pro.ui.view;
+package com.xxp.yangyan.pro.banner;
 
 import android.app.Activity;
 import android.app.Application;
@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.xxp.yangyan.R;
-import com.xxp.yangyan.pro.adapter.BannerAdapter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,10 +34,7 @@ import java.util.TimerTask;
 public class BannerView extends RelativeLayout {
 
     private final String TAG = "BannerView";
-    private Activity activity;
-
-
-    private android.support.v4.view.ViewPager viewPager;
+    private ViewPager viewPager;
     //轮播图的数量
     private final int viewPagerCount = 5;
     //指示器的小圆点数组
@@ -61,25 +57,16 @@ public class BannerView extends RelativeLayout {
     //小圆点没选中的颜色
     private int point_full_color;
 
-
-    private View activityView;
-
     //停止制动滑动
     private boolean stop = false;
     private List<View> bannerView;
     private LinearLayout pointGroup;
-
-    public List<View> getBannerView() {
-        return bannerView;
-    }
-
-    public void setBannerView(List<View> bannerView) {
-        this.bannerView = bannerView;
-    }
-
-    private Context mContext;
+    private Activity mActivity;
 
     private BannerScroll mScroller;
+
+    //必要的接口
+    private IBannerPrepare mIBannerPrepare;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -99,6 +86,7 @@ public class BannerView extends RelativeLayout {
     public BannerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.e(TAG, "BannerView: " + context);
+        //解析自定义的属性
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BannerView);
         point_empty_color = typedArray.getColor(R.styleable.BannerView_point_empty_color, DEFAULT_EMPTY_COLOR);
         point_full_color = typedArray.getColor(R.styleable.BannerView_point_full_color, DEFAULT_FULL_COLOR);
@@ -106,6 +94,7 @@ public class BannerView extends RelativeLayout {
         loading_image = typedArray.getInt(R.styleable.BannerView_loading_image, R.drawable.bg_loading);
     }
 
+    //自动轮播
     private void autoScroll() {
         mScroller = new BannerScroll(getContext());
         try {
@@ -115,7 +104,6 @@ public class BannerView extends RelativeLayout {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //自动轮播
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -130,17 +118,39 @@ public class BannerView extends RelativeLayout {
 
 
     private void initView() {
+        //初始化viewPager
         initViewPager();
+        //圆点指示器
         initPoint();
-        initBannerView();
+        //进行布局
+        bannerlayout();
+        //设置到中间Item(滑无边界也)
         viewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+    }
+
+    public void setupIbanner(IBannerPrepare iBannerPrepare){
+        this.mIBannerPrepare = iBannerPrepare;
+    }
+
+    private void steupInitIbanner() {
+        if (mIBannerPrepare != null) {
+            //得到Activity
+            mActivity = mIBannerPrepare.getActivity();
+            //立马注册lifecycleCallback
+            mActivity
+                    .getApplication()
+                    .registerActivityLifecycleCallbacks(lifecycleCallbacks);
+            //外传bannerViews
+            mIBannerPrepare.setBannerViews(bannerView);
+        }
     }
 
     //设置切换滑动的时间
     public void setScrollDuration(int duration){
         mScroller.setmDuration(duration);
     }
-    private void initBannerView() {
+
+    private void bannerlayout() {
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -148,6 +158,8 @@ public class BannerView extends RelativeLayout {
         addView(pointGroup, params);
     }
 
+
+    //往里面加图片,并设置事件监听
     private void initViewPager() {
         viewPager = new ViewPager(getContext());
         bannerView = new ArrayList<>();
@@ -156,6 +168,16 @@ public class BannerView extends RelativeLayout {
             image.setImageResource(loading_image);
             image.setScaleType(ImageView.ScaleType.FIT_XY);
             bannerView.add(image);
+            //设置点击事件监听
+            final int position = i;
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnClickListener != null) {
+                        mOnClickListener.onClick(position);
+                    }
+                }
+            });
         }
 
         viewPager.setAdapter(new BannerAdapter(bannerView));
@@ -221,9 +243,11 @@ public class BannerView extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         initView();
+        steupInitIbanner();
         autoScroll();
     }
 
+    //小圆点
     private class Point extends View {
 
         Paint paint;
@@ -260,6 +284,8 @@ public class BannerView extends RelativeLayout {
         }
     }
 
+
+    //监听Activity的生命周期(优化考虑)
     Application.ActivityLifecycleCallbacks lifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -274,7 +300,7 @@ public class BannerView extends RelativeLayout {
         @Override
         public void onActivityResumed(Activity activity) {
 
-            if (BannerView.this.activity.equals(activity)) {
+            if (BannerView.this.mActivity.equals(activity)) {
                 Log.e(TAG, "onActivityResumed: ");
                 stop = false;
             }
@@ -283,7 +309,7 @@ public class BannerView extends RelativeLayout {
 
         @Override
         public void onActivityPaused(Activity activity) {
-            if (BannerView.this.activity.equals(activity)) {
+            if (BannerView.this.mActivity.equals(activity)) {
                 Log.e(TAG, "onActivityPaused: ");
                 stop = true;
             }
@@ -307,21 +333,30 @@ public class BannerView extends RelativeLayout {
     };
 
     public Activity getActivity() {
-        return activity;
+        return mActivity;
     }
 
+    //是否是停止状态
     public boolean isStop() {
         return stop;
     }
 
+    //控制停止状态
     public void setStop(boolean stop) {
         this.stop = stop;
     }
 
 
-    public void setActivity(Activity activity) {
-        activity.getApplication().registerActivityLifecycleCallbacks(lifecycleCallbacks);
-        this.activity = activity;
+    //点击事件.
+    private OnClickListener mOnClickListener;
+
+    public interface OnClickListener{
+        void onClick(int position);
+    }
+
+    public void setBannerOnclickListener(OnClickListener mOnClickListener){
+        this.mOnClickListener = mOnClickListener;
+
     }
 
 }
