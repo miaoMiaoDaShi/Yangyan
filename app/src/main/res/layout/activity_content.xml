@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context="com.xxp.yangyan.pro.ui.activity.MainActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_main">
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/radiogroup">
+    </FrameLayout>
+
+    <!--<View-->
+        <!--android:id="@+id/line"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0.5dp"-->
+        <!--android:layout_above="@+id/radiogroup"-->
+        <!--android:background="#bfbebe" />-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorgray"
+        android:layout_above="@id/radiogroup"/>
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/tab_1"
+            style="@style/navigation_bottom_radio"
+            android:drawableTop="@drawable/tab_1_btn"
+            android:text="主页" />
+
+        <RadioButton
+            android:id="@+id/tab_2"
+            style="@style/navigation_bottom_radio"
+            android:drawableTop="@drawable/tab_2_btn"
+            android:text="图城" />
+
+        <RadioButton
+            android:id="@+id/tab_3"
+            style="@style/navigation_bottom_radio"
+            android:drawableTop="@drawable/tab_3_btn"
+            android:text="分类" />
+        <RadioButton
+            android:id="@+id/tab_4"
+            style="@style/navigation_bottom_radio"
+            android:drawableTop="@drawable/tab_4_btn"
+            android:text="我的" />
+
+    </RadioGroup>
+</RelativeLayout>

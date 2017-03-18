@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">养眼</string>
+    <string name="gonggao">加载中...</string>
+    <string name="splash_describe">妹子这么漂亮</string>
+    <string name="splash_do">双击设为壁纸吧</string>
+    <string name="loading">加载慢??,拿纸擦一擦吧...</string>
+    <string name="about_text">奇创喵喵,感谢你的支持!</string>
+    <string name="email">1340751953@qq.com</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

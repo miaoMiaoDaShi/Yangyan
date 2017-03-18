@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#fc004d</color>
+    <color name="colorPrimaryDark">#db0345</color>
+    <color name="colorAccent">#fa0e56</color>
+    <color name="red">#40fa0e56</color>
+    <color name="colorgray">#eae6e8</color>
+    <color name="colorLoginButtonPressed">@color/redDark</color>
+
+
+    <color name="redDark">#FFC72127</color>
+    <color name="primary">#69F0AE</color>
+    <color name="accent">@color/primary</color>
+
+
+    <color name="blue">#67C0E5</color>
+    <color name="green">#9AD262</color>
+    <color name="pink">#EA9EA0</color>
+    <color name="blue_and_green">#75C0AC</color>
+
+    <!-- 87% -->
+    <!-- 54% -->
+    <!-- 38% -->
+    <!-- 70% -->
+    <!-- 30% -->
+    <!-- grey 50 -->
+    <!-- grey 300 -->
+    <!-- this is blended with immersive_bars to produce the desired status bar color i.e. background_super_dark -->
+    <color name="scrim">#99323232</color>
+
+    <!-- 60% black-->
+    <!-- 30% black-->
+    <!-- 60% black on @color/primary -->
+    <!-- grey 600 -->
+    <!-- 12% black -->
+
+    <!-- text (most text uses material theme colours) -->
+    <!-- 26% black -->
+
+    <!-- designer news -->
+    <!--light blue 500 --><![CDATA[-->
+    ]]><!-- light blue 600 -->
+
+
+    <!-- dribbble -->
+    <!-- pink 300 -->
+    <!-- pink 400 -->
+    <!-- 87% white-->
+
+    <!-- pink 300 -->
+</resources>
