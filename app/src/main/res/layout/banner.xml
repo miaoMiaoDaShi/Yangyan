@@ -4,12 +4,12 @@
     android:layout_height="150dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.xxp.yangyan.pro.ui.view.BannerView
+    <com.xxp.yangyan.pro.banner.BannerView
         android:id="@+id/vp_banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:point_empty_color="@android:color/white"
         app:point_full_color="@color/colorPrimary">
 
-    </com.xxp.yangyan.pro.ui.view.BannerView>
+    </com.xxp.yangyan.pro.banner.BannerView>
 </RelativeLayout>
