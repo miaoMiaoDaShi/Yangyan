@@ -27,11 +27,11 @@
             android:text="@string/loading"/>
     </LinearLayout>
 
-    <com.xxp.yangyan.pro.ui.view.ViewPager
+    <com.xxp.yangyan.pro.view.ViewPager
         android:id="@+id/vp_gallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.xxp.yangyan.pro.ui.view.ViewPager>
+    </com.xxp.yangyan.pro.view.ViewPager>
 
 
     <RelativeLayout

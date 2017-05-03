@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".pro.ui.activity.SplashActivity"
+            android:name=".pro.splash.view.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,24 +35,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".pro.ui.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:name=".pro.imageList.view.GalleryActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
-            android:name=".pro.ui.activity.GalleryActivity"
-            android:screenOrientation="portrait" />
+            android:name=".pro.imageList.view.ImgLIstActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".pro.ui.activity.ImgLIstActivity"
-            android:screenOrientation="portrait" />
+            android:name=".pro.MainActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".pro.ui.activity.AboutActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Translucent" />
-        <activity
-            android:name=".pro.ui.activity.LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".pro.ui.activity.RegisterActivity" />
+            android:name=".pro.myCenter.view.AboutActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

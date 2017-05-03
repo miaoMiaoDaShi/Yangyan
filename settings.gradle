@@ -1,1 +1,1 @@
-include ':app', ':miaoskin'
+include ':app', ':miaoskin', ':updatelibrary'

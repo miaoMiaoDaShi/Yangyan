@@ -14,4 +14,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="load_splash_img_error">加载推荐壁纸数据失败!</string>
+    <string name="permission_error_sd">拒绝该权限,将不能使用应用的壁纸下载功能</string>
+    <string name="load_root_error">获取重要配置信息出错,软件将自动退出</string>
+    <string name="warning">警告</string>
 </resources>

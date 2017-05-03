@@ -14,7 +14,7 @@ public interface HTMLOne {
     //美女壁纸的
     String MEINV_BASE_URL = "http://m.xxxiao.com/";
 
-    @GET("page/{page}")
+    @GET("new/page/{page}")
     Observable<ResponseBody> getHomePage(@Path("page") int page);
 
     @GET("cat/{type}/page/{page}")

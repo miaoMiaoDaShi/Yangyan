@@ -1,7 +1,7 @@
 package com.xxp.yangyan.pro.api;
 
 import com.xxp.yangyan.pro.bean.CategoryInfoData;
-import com.xxp.yangyan.pro.bean.HomeInfo;
+import com.xxp.yangyan.pro.bean.HomeData;
 import com.xxp.yangyan.pro.bean.SplashInfo;
 
 import retrofit2.http.GET;
@@ -16,7 +16,7 @@ public interface MMApi {
     String MY_BASE_URL = "http://xxpbox.cn/app/yangyan/";
 
     @GET("homePage")
-    Observable<HomeInfo> getHomePage();
+    Observable<HomeData> getHomePage();
 
     @GET("splashImg")
     Observable<SplashInfo> getSplashPage();

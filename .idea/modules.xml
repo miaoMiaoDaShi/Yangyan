@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/miaoskin/miaoskin.iml" filepath="$PROJECT_DIR$/miaoskin/miaoskin.iml" />
       <module fileurl="file://$PROJECT_DIR$/update/update.iml" filepath="$PROJECT_DIR$/update/update.iml" />
+      <module fileurl="file://$PROJECT_DIR$/updatelibrary/updatelibrary.iml" filepath="$PROJECT_DIR$/updatelibrary/updatelibrary.iml" />
     </modules>
   </component>
 </project>

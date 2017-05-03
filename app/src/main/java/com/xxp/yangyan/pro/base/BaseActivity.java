@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.xxp.yangyan.mvp.presenter.impl.MvpBasePresenter;
+import com.xxp.yangyan.mvp.view.impl.MvpActivity;
 import com.xxp.yangyan.pro.listener.RequestPermisListener;
 import com.xxp.yangyan.pro.utils.ActivityManager;
 
@@ -18,28 +20,30 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
- * Created by 钟大爷 on 2017/2/9.
- * 所有Activity的基类
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 项目的activity的基类
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
-    protected P presenter;
+public abstract class BaseActivity<P extends MvpBasePresenter> extends MvpActivity<P> {
     private final String TAG = "BaseActivity";
     private static RequestPermisListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e(TAG, "onCreate: 5");
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate: 6" );
         setContentView(getLayoutId());
         ButterKnife.bind(this);
-        if (onCreatePresenter() != null) {
-            presenter = onCreatePresenter();
-        }
 
     }
 
+    /**
+     * 权限的申请
+     *
+     * @param permis
+     * @param listener
+     */
     public static void requestPermission(String permis[], RequestPermisListener listener) {
         mListener = listener;
         List<String> permissions = new ArrayList<>();
@@ -56,6 +60,13 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
     }
 
+    /**
+     * 权限申请结果的处理
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -82,15 +93,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
     }
 
+    /**
+     * @return 返回视图的布局id
+     */
     protected abstract int getLayoutId();
-
-    protected abstract P onCreatePresenter();
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (presenter != null) {
-            presenter.detachView();
-        }
-    }
 }
