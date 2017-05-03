@@ -1,10 +1,18 @@
 package com.xxp.yangyan.pro.listener;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 
 import java.util.List;
+
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
+import jp.wasabeef.recyclerview.animators.ScaleInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListener {
     //是否加载中.
@@ -34,7 +42,12 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
     private void initRecyclerView() {
         recyclerView = getRecylerView();
         recyclerView.setLayoutManager(getLayoutManager());
-        recyclerView.setAdapter(getAdapter());
+        recyclerView.setAdapter(new ScaleInAnimationAdapter(getAdapter()));
+//        recyclerView.setItemAnimator(new SlideInUpAnimator());
+//        recyclerView.getItemAnimator().setAddDuration(2000);
+//        recyclerView.getItemAnimator().setChangeDuration(2000);
+//        recyclerView.getItemAnimator().setMoveDuration(2000);
+//        recyclerView.getItemAnimator().setRemoveDuration(2000);
         recyclerView.addOnScrollListener(this);
     }
 

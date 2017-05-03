@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="9dp"
-            app:contentPaddingTop="10dp"
-            app:contentPaddingBottom="30dp"
+            app:contentPaddingTop="8dp"
+            app:contentPaddingBottom="20dp"
             app:contentPaddingRight="10dp"
             app:contentPaddingLeft="20dp"
             app:cardBackgroundColor="@color/accent">

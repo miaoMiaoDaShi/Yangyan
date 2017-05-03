@@ -1,9 +1,11 @@
 package com.xxp.yangyan.pro.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ public class ImageAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Fragment fragment;
     private Activity activity;
     private final T t;
+    private LayoutInflater mLayoutInflater;
 
     public ImageAdapter(List<ImageInfo> images, Fragment fragment, Activity activity) {
         this.images = images;
@@ -37,13 +40,14 @@ public class ImageAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.fragment = fragment;
         this.activity = activity;
         t = (T) ((fragment == null) ? activity : fragment);
+        mLayoutInflater = LayoutInflater.from(t instanceof Activity? (Context) t :((Fragment)t).getContext());
 
 
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewHolder(UIUtils.getInflaterView(R.layout.item_image_grid));
+        return new MyViewHolder(mLayoutInflater.inflate(R.layout.item_image_grid,parent,false));
     }
 
     @Override

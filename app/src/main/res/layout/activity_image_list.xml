@@ -4,7 +4,7 @@
     android:id="@+id/activity_image_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.xxp.yangyan.pro.ui.activity.ImgLIstActivity">
+    android:background="@android:color/white">
     <RelativeLayout
         android:layout_width="match_parent"
         android:paddingTop="16dp"

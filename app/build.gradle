@@ -111,4 +111,6 @@ dependencies {
     compile rootProject.ext.dependencies["http-legacy"]
     //greenDAO
     compile rootProject.ext.dependencies["greendao"]
+    //recyclerview-animators
+    compile rootProject.ext.dependencies["recyclerview-animators"]
 }

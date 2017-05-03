@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 
 /**
  * Created by 钟大爷 on 2017/2/3.
@@ -76,8 +77,9 @@ public class CategoryFragment extends BaseSwipeFragment<Presenter> implements Mv
     //初始化RecylerView
     private void initRecylerView() {
         rvCategory.setLayoutManager(new LinearLayoutManager(App.getmContext()));
-        adapter = new CategoryAdapter(categories, this);
+        adapter = new CategoryAdapter(getContext(),categories, this);
         rvCategory.setAdapter(adapter);
+        rvCategory.setItemAnimator(new ScaleInBottomAnimator());
 
         //设置每个item的点击事件
         adapter.setOnItemClick(new CategoryAdapter.OnItemClick() {

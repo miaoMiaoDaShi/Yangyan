@@ -1,10 +1,12 @@
 package com.xxp.yangyan.pro.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<CategoryInfo> categories;
     //颜色值,避免滑动时重复变色
     private SparseArray<Integer> sparseArray;
+    private LayoutInflater mLayoutInflater;
     private final int itemColor[] = {
             R.color.blue_and_green,
             R.color.blue,
@@ -37,15 +40,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final String TAG = "CategoryAdapter";
 
-    public CategoryAdapter(List<CategoryInfo> categories, Fragment fragment) {
+    public CategoryAdapter(Context context, List<CategoryInfo> categories, Fragment fragment) {
         this.categories = categories;
         this.fragment = fragment;
         this.sparseArray = new SparseArray();
+        this.mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = UIUtils.getInflaterView(R.layout.item_category);
+        View view = mLayoutInflater.inflate(R.layout.item_category,parent,false);
         return new MyHolder(view);
     }
 

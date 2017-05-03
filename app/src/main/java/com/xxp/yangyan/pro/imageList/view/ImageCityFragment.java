@@ -48,7 +48,6 @@ public class ImageCityFragment extends BaseSwipeFragment<Presenter>
     @BindView(swipe)
     SwipeRefreshLayout swipeRefresh;
     private BaseOnScrollListener listener;
-    private RecyclerView.LayoutManager layoutManager;
     //存放图片
     private List<ImageInfo> imageInfos;
     private ImageAdapter imageAdapter;
@@ -187,9 +186,8 @@ public class ImageCityFragment extends BaseSwipeFragment<Presenter>
                 listener.setEnd(true);
             } else {
                 this.imageInfos.addAll(imageInfos);
-                int pos = imageInfos.size();
+                int pos = imageInfos.size()-1;
                 if (pos > 0) {
-                    pos--;
                     imageAdapter.notifyItemChanged(pos, listCount);
                     swipeRefresh.setRefreshing(false);
                     listener.setLoading(false);

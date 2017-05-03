@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <ProgressBar
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
     <ImageView
         android:id="@+id/iv_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"/>
+
     <LinearLayout
         android:id="@+id/ll_img"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:background="@mipmap/ic_bottom"
         android:gravity="center_vertical"
-        android:padding="5dp"
-        android:background="@mipmap/ic_bottom">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/tv_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:maxLines="2"
             android:text="冯雪娇 [尤果圈爱尤物] VOL609 爱的娇集 黑丝美臀透视镂空内衣任性大尺度私房照"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
