@@ -1,7 +1,8 @@
 # 养眼
 ## 一个看妹子的App
 ### MVP+Retrofit+Rxjava
-## 数据来自其他网站,采用jsoup抓取数据.
+## 数据源 采用jsoup抓取数据.
+1. ### [http://m.xxxiao.com/](http://m.xxxiao.com/ "http://m.xxxiao.com/") 
 - ### 软件启动图,背景图片可随后台控制
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/Screenshot_2017-03-18-10-30-14.png)
 - ### 部分截图展示
