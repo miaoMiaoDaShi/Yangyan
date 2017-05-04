@@ -6,15 +6,17 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.pro.adapter.ImageAdapter;
 import com.xxp.yangyan.pro.api.AnalysisHTML;
 import com.xxp.yangyan.pro.base.BaseSwipeActivity;
 import com.xxp.yangyan.pro.bean.ImageInfo;
 import com.xxp.yangyan.pro.gallery.view.GalleryActivity;
+import com.xxp.yangyan.pro.imageList.model.Model;
 import com.xxp.yangyan.pro.imageList.presenter.Presenter;
 import com.xxp.yangyan.pro.listener.BaseOnScrollListener;
 import com.xxp.yangyan.pro.utils.ActivityManager;
@@ -30,7 +32,7 @@ import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
-        implements ImageListView<ResponseBody> {
+        implements ImageListView<List<ImageInfo>> {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -42,13 +44,13 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
     SwipeRefreshLayout swipe;
 
     private final String TAG = "BaseSwipeActivity";
-    private BaseOnScrollListener listener;
-    private ImageAdapter imageAdapter;
-    private List<ImageInfo> imageInfos;
-    private String type;
+    private BaseOnScrollListener mListener;
+    private ImageAdapter mImageAdapter;
+    private List<ImageInfo> mImageInfos;
+    private String mType;
     private ProgressDialog mDialog;
-    private int currentPosition;
-    private boolean isCollect = false;
+    private int mCurrentPosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,10 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
 
     private void initRecylerView() {
 
-        listener = new BaseOnScrollListener<ImageInfo>() {
+        mListener = new BaseOnScrollListener<ImageInfo>() {
             @Override
             protected List<ImageInfo> getList() {
-                return imageInfos;
+                return mImageInfos;
             }
 
             @Override
@@ -83,36 +85,28 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
 
             @Override
             protected RecyclerView.Adapter getAdapter() {
-                if (imageAdapter == null) {
-                    imageAdapter = new ImageAdapter(imageInfos, null, ImgLIstActivity.this);
+                if (mImageAdapter == null) {
+                    mImageAdapter = new ImageAdapter(mImageInfos, null, ImgLIstActivity.this);
                 }
-                return imageAdapter;
+                return mImageAdapter;
             }
 
 
             @Override
             protected void loadData() {
-                if (isCollect) {
-                    //是收藏
-                    Log.e(TAG, "loadData: 收藏" );
-                    //presenter.loadData();
-                } else {
-                    Log.e(TAG, "loadData: 不是收藏" );
-                    //不是收藏
-                    presenter.loadData(type, getCurrentPage());
-                }
+                presenter.loadData(mType, getCurrentPage());
             }
         };
 
-        imageAdapter.setOnItemClick(new ImageAdapter.OnItemClick() {
+        mImageAdapter.setOnItemClick(new ImageAdapter.OnItemClick() {
             @Override
             public void onClickListener(int position) {
-                currentPosition = position;
-                if(isCollect){
-                    startToGallery(imageInfos);
+                mCurrentPosition = position;
+                if (TextUtils.equals(Model.TYPE_COLLECT, mType)) {
+                    startToGallery(mImageInfos);
                 } else {
                     mDialog = new ProgressDialog(ImgLIstActivity.this);
-                    presenter.loadGallery(imageInfos.get(position), mDialog);
+                    presenter.loadGallery(mImageInfos.get(position), mDialog);
                 }
 
             }
@@ -121,16 +115,9 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
 
 
     private void initData() {
-        type = getIntent().getStringExtra("type");
-        if(null == type){
-            Log.e(TAG, "initData: getIntent");
-            isCollect = true;
-        } else {
-            tvTitle.setText("");
-        }
-        Log.e(TAG, "initData: ");
-        Log.e(TAG, "setText: ");
-        imageInfos = new ArrayList<>();
+        mType = getIntent().getStringExtra("type") == null ? Model.TYPE_NEW : getIntent().getStringExtra("type");
+        tvTitle.setText(mType);
+        mImageInfos = new ArrayList<>();
     }
 
 
@@ -141,7 +128,7 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
 
     @Override
     public void onRefresh() {
-        listener.refresh();
+        mListener.refresh();
     }
 
 
@@ -158,25 +145,15 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
     }
 
 
-
-
     @Override
     public void loadGalleryError(Throwable throwable) {
 
     }
 
     @Override
-    public void loadGallerySuccess(ResponseBody responseBody) {
-        List<ImageInfo> images = new ArrayList<>();
-        try {
-            images = (AnalysisHTML.ParticularsToList(responseBody.string(),
-                    imageInfos.get(currentPosition).getLink()));
-
-            mDialog.dismiss();
-            startToGallery(images);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void loadGallerySuccess(List<ImageInfo> images) {
+        mDialog.dismiss();
+        startToGallery(images);
     }
 
     private void startToGallery(List<ImageInfo> images) {
@@ -197,9 +174,9 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
 
     @Override
     public void showError(Throwable throwable) {
-        if(throwable.toString().contains("404")){
+        if (throwable.toString().contains("404")) {
             loadIsEmpty();
-            listener.setEnd(true);
+            mListener.setEnd(true);
         } else {
             loadError();
         }
@@ -207,13 +184,8 @@ public class ImgLIstActivity extends BaseSwipeActivity<Presenter>
     }
 
     @Override
-    public void showData(ResponseBody data) {
-        try {
-            listener.showImageListToView(AnalysisHTML.HomePageToList(data.string()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void showData(List<ImageInfo> data) {
+        mListener.showImageListToView(data);
     }
 
     @Override

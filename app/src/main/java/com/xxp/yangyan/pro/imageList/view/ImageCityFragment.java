@@ -17,6 +17,7 @@ import com.xxp.yangyan.pro.api.AnalysisHTML;
 import com.xxp.yangyan.pro.base.BaseSwipeFragment;
 import com.xxp.yangyan.pro.bean.ImageInfo;
 import com.xxp.yangyan.pro.gallery.view.GalleryActivity;
+import com.xxp.yangyan.pro.imageList.model.Model;
 import com.xxp.yangyan.pro.imageList.presenter.Presenter;
 import com.xxp.yangyan.pro.listener.BaseOnScrollListener;
 import com.xxp.yangyan.pro.utils.UIUtils;
@@ -39,7 +40,7 @@ import static com.xxp.yangyan.R.id.swipe;
  */
 
 public class ImageCityFragment extends BaseSwipeFragment<Presenter>
-        implements SwipeRefreshLayout.OnRefreshListener, ImageListView<ResponseBody> {
+        implements SwipeRefreshLayout.OnRefreshListener, ImageListView<List<ImageInfo>> {
     private final String TAG = "ImageCityFragment";
     @BindView(R.id.tagFlowLayout)
     TagFlowLayout tagFlowLayout;
@@ -102,7 +103,7 @@ public class ImageCityFragment extends BaseSwipeFragment<Presenter>
 
             @Override
             protected void loadData() {
-                presenter.loadData(null, getCurrentPage());
+                presenter.loadData(Model.TYPE_NEW, getCurrentPage());
             }
         };
         imageAdapter.setOnItemClick(new ImageAdapter.OnItemClick() {
@@ -178,27 +179,19 @@ public class ImageCityFragment extends BaseSwipeFragment<Presenter>
     }
 
     @Override
-    public void showData(ResponseBody data) {
-
-        try {
-            List<ImageInfo> imageInfos = AnalysisHTML.HomePageToList(data.string());
-            int listCount = imageInfos.size();
-            if (listCount == 0) {
-                listener.setEnd(true);
-            } else {
-                this.imageInfos.addAll(imageInfos);
-                int pos = imageInfos.size()-1;
-                if (pos > 0) {
-                    imageAdapter.notifyItemChanged(pos, listCount);
-                    swipeRefresh.setRefreshing(false);
-                    listener.setLoading(false);
-                }
+    public void showData(List<ImageInfo> imageInfos) {
+        int listCount = imageInfos.size();
+        if (listCount == 0) {
+            listener.setEnd(true);
+        } else {
+            this.imageInfos.addAll(imageInfos);
+            int pos = imageInfos.size() - 1;
+            if (pos > 0) {
+                imageAdapter.notifyItemChanged(pos, listCount);
+                swipeRefresh.setRefreshing(false);
+                listener.setLoading(false);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-
     }
 
 
@@ -208,17 +201,11 @@ public class ImageCityFragment extends BaseSwipeFragment<Presenter>
     }
 
     @Override
-    public void loadGallerySuccess(ResponseBody responseBody) {
+    public void loadGallerySuccess(List<ImageInfo> Imageinfos) {
         List<ImageInfo> images = new ArrayList<>();
-        try {
-            images = (AnalysisHTML.ParticularsToList(responseBody.string(),
-                    imageInfos.get(currentPosition).getLink()));
             mDialog.dismiss();
             Intent intent = new Intent(UIUtils.getContext(), GalleryActivity.class);
             intent.putExtra("gallery", (Serializable) images);
             startActivity(intent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

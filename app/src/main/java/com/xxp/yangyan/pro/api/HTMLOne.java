@@ -21,6 +21,6 @@ public interface HTMLOne {
     Observable<ResponseBody> getTypePage(@Path("type") String type,@Path("page") int page);
 
     @GET("{id}")
-    Observable<ResponseBody> getParticulars(@Path("id") String id);
+    Observable<ResponseBody> getParticulars(@Path("id") int id);
 
 }

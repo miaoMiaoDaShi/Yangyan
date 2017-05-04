@@ -17,6 +17,7 @@ import com.xxp.yangyan.pro.adapter.SettingAdapter;
 import com.xxp.yangyan.pro.base.BaseFragment;
 import com.xxp.yangyan.pro.base.BasePresenter;
 import com.xxp.yangyan.pro.bean.SettingInfo;
+import com.xxp.yangyan.pro.imageList.model.Model;
 import com.xxp.yangyan.pro.imageList.view.ImgLIstActivity;
 import com.xxp.yangyan.pro.myCenter.presenter.Presenter;
 import com.xxp.yangyan.pro.utils.GlideCacheUtil;
@@ -80,11 +81,22 @@ public class MyFragment extends BaseFragment<Presenter> {
         }
     }
 
+    /**
+     * fragment可见状态发生改变的时候调用
+     *
+     * @param hidden
+     */
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            initRecylerView();
+        /**
+         * 每次显示的时候,刷新缓存的数据大小信息
+         */
+        if (!hidden) {
+            if (adapter != null) {
+                adapter.notifyItemChanged(0);
+            }
+
         }
     }
 
@@ -134,7 +146,9 @@ public class MyFragment extends BaseFragment<Presenter> {
                         clearGildeCache();
                         break;
                     case 1:
-                        startActivity(new Intent(getActivity(), ImgLIstActivity.class));
+                        Intent intent = new Intent(getActivity(), ImgLIstActivity.class);
+                        intent.putExtra("type", Model.TYPE_COLLECT);
+                        startActivity(intent);
                         break;
                     case 2:
                         checkUpdate();
@@ -163,7 +177,7 @@ public class MyFragment extends BaseFragment<Presenter> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GlideCacheUtil.getInstance().clearImageDiskCache(getActivity());
-                settings.get(0).setCacheCount("0.0Byte");
+                settings.get(0).setCacheCount("0.0B");
                 adapter.notifyItemChanged(0);
             }
         });
@@ -187,7 +201,7 @@ public class MyFragment extends BaseFragment<Presenter> {
     protected Presenter bindPresenter() {
         return null;
     }
-    
+
     public boolean joinQQGroup(String key) {
         Intent intent = new Intent();
         intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + key));

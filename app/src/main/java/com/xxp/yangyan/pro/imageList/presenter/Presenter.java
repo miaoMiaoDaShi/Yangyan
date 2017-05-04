@@ -2,15 +2,16 @@ package com.xxp.yangyan.pro.imageList.presenter;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.xxp.yangyan.pro.api.AnalysisHTML;
 import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.CategoryInfoData;
 import com.xxp.yangyan.pro.bean.ImageInfo;
-import com.xxp.yangyan.pro.category.view.CategoryFragment;
 import com.xxp.yangyan.pro.imageList.model.Model;
 import com.xxp.yangyan.pro.imageList.view.ImageListView;
 
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -37,12 +38,10 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
         return new Model();
     }
 
-    public void loadData(String type, final int page) {
-        Subscription subscription = getModel()
-                .getData(type, page)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<ResponseBody>() {
+    public void loadData(final String type, final int page) {
+
+        Observer observer = TextUtils.equals(Model.TYPE_COLLECT, type) ?
+                new Observer<List<ImageInfo>>() {
                     @Override
                     public void onCompleted() {
                         //提示view加载完成
@@ -53,22 +52,68 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
                     public void onError(Throwable throwable) {
                         Log.e(TAG, "onError: " + throwable);
                         //图片加载失败
-                        if (page == 0x11) {
+                        if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
                             getView().loadGalleryError(throwable);
-                        } else getView().showError(throwable);
+                        } else {
+                            getView().showError(throwable);
+                        }
                     }
 
                     @Override
-                    public void onNext(ResponseBody responseBody) {
-                        if (page == 0x11) {
+                    public void onNext(List<ImageInfo> imageInfos) {
+                        if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
                             //显示图片集
-                            getView().loadGallerySuccess(responseBody);
+                            getView().loadGallerySuccess(imageInfos);
                         } else {
                             //显示加载的结果
-                            getView().showData(responseBody);
+                            getView().showData(imageInfos);
                         }
                     }
-                });
+                } : new Observer<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+                //提示view加载完成
+                getView().showContent();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Log.e(TAG, "onError: " + throwable);
+                //图片加载失败
+                if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
+                    getView().loadGalleryError(throwable);
+                } else {
+                    getView().showError(throwable);
+                }
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
+                    //显示图片集
+                    try {
+                        getView().loadGallerySuccess((AnalysisHTML.ParticularsToList(responseBody.string(),
+                                String.valueOf(page))));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //显示加载的结果
+                    try {
+                        getView().showData(AnalysisHTML.HomePageToList(responseBody.string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        };
+        Subscription subscription = getModel()
+                .getData(type, page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(observer);
+
         addSubscribe(subscription);
     }
 
@@ -84,7 +129,7 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
             }
         });
         dialog.show();
-        loadData(imageInfo.getLink(), 0x11);
+        loadData(Model.TYPE_PARTICULARS, Integer.parseInt(imageInfo.getLink()));
     }
 
 
