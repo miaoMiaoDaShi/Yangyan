@@ -5,22 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_images"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:paddingTop="16dp"
         android:layout_height="66dp"
         android:layout_below="@id/top"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/shape_top"
         android:paddingLeft="5dp"
         android:paddingRight="10dp"
         android:id="@+id/relativeLayout3">
 
         <ImageView
             android:id="@+id/iv_back"
+            android:layout_marginLeft="-10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@mipmap/ic_back"
-            android:backgroundTint="@android:color/white"/>
+            android:src="@mipmap/ic_back" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -32,19 +47,5 @@
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </RelativeLayout>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayout3">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_images"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

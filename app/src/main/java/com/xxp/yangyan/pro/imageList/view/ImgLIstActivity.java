@@ -14,6 +14,7 @@ import com.xxp.yangyan.pro.adapter.ImageAdapter;
 import com.xxp.yangyan.pro.api.AnalysisHTML;
 import com.xxp.yangyan.pro.base.BaseSwipeActivity;
 import com.xxp.yangyan.pro.bean.ImageInfo;
+import com.xxp.yangyan.pro.gallery.view.GalleryActivity;
 import com.xxp.yangyan.pro.imageList.presenter.Presenter;
 import com.xxp.yangyan.pro.listener.BaseOnScrollListener;
 import com.xxp.yangyan.pro.utils.ActivityManager;

@@ -80,6 +80,14 @@ public class MyFragment extends BaseFragment<Presenter> {
         }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            initRecylerView();
+        }
+    }
+
     private void initRecylerView() {
         settings = new ArrayList<>();
 

@@ -6,10 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context="com.xxp.yangyan.pro.ui.activity.MainActivity"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
-
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
     <FrameLayout
         android:id="@+id/fl_content"
         android:layout_width="match_parent"

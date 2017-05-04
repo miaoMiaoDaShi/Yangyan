@@ -16,7 +16,8 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
         app:itemIconTint="@color/colorPrimary"
-        app:itemTextColor="@color/colorPrimary">
+        app:itemTextColor="@color/colorPrimary"
+        app:theme="@style/Base.Theme.AppCompat.Light">
 
     </android.support.design.widget.NavigationView>
 

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_gallery"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@android:color/black"
-    tools:context="com.xxp.yangyan.pro.ui.activity.GalleryActivity">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,27 +16,41 @@
         <ProgressBar
             android:layout_width="50dp"
             android:layout_height="50dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/loading"
             android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:text="@string/loading"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <com.xxp.yangyan.pro.view.ViewPager
         android:id="@+id/vp_gallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.xxp.yangyan.pro.view.ViewPager>
+        android:layout_height="match_parent"></com.xxp.yangyan.pro.view.ViewPager>
 
 
+    <ImageView
+        android:id="@+id/iv_bg_love"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/bg_like_circle_background"/>
+    <ImageView
+        android:id="@+id/iv_img_love"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_love"/>
     <RelativeLayout
         android:id="@+id/rl_topBar"
         android:layout_width="match_parent"
         android:layout_height="66dp"
+        android:background="@drawable/shape_top"
         android:paddingLeft="5dp"
         android:paddingRight="10dp">
+
         <View
             android:id="@+id/top"
             android:layout_width="match_parent"
@@ -47,20 +58,24 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_below="@id/top"
-            android:layout_width="66dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
+            android:layout_below="@id/top"
+            android:layout_marginLeft="-10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:src="@mipmap/ic_back" />
 
         <TextView
             android:id="@+id/tv_galleryCount"
-            android:layout_below="@id/top"
             android:layout_width="wrap_content"
             android:layout_height="66dp"
-            android:gravity="center"
             android:layout_alignParentRight="true"
+            android:layout_below="@id/top"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
             android:text="0/0"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/white"
             android:textSize="20sp" />
     </RelativeLayout>
 
@@ -68,43 +83,85 @@
         android:id="@+id/gallery_operate"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@drawable/shape_bottom"
         android:layout_alignParentBottom="true">
 
-        <TextView
-            android:id="@+id/tv_collect"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
+        <LinearLayout
+            android:id="@+id/ll_collect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#9f45cc"
             android:gravity="center"
-            android:padding="15dp"
-            android:text="收藏"
-            android:textColor="@android:color/white"
-            android:textSize="25sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_download"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            <ImageView
+                android:id="@+id/iv_collect"
+                android:clickable="false"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:src="@mipmap/ic_love" />
+
+            <TextView
+                android:id="@+id/tv_collect"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="收藏"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_download"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#fa004d"
             android:gravity="center"
-            android:padding="15dp"
-            android:text="下载"
-            android:textColor="@android:color/white"
-            android:textSize="25sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_setwallpaper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="#25c9c1"
+            <ImageView
+                android:clickable="false"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:src="@mipmap/ic_download" />
+
+            <TextView
+                android:id="@+id/tv_download"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下载"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setwallpaper"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
-            android:padding="15dp"
-            android:text="设为壁纸"
-            android:textColor="@android:color/white"
-            android:textSize="25sp" />
+            android:orientation="vertical">
+
+            <ImageView
+                android:clickable="false"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:src="@mipmap/ic_set_wallpaper" />
+
+            <TextView
+                android:id="@+id/tv_setwallpaper"
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设为壁纸"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
 
 
     </LinearLayout>

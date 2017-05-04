@@ -1,11 +1,19 @@
-package com.xxp.yangyan.pro.imageList.view;
+package com.xxp.yangyan.pro.gallery.view;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +43,9 @@ import com.xxp.yangyan.pro.view.ViewPager;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,6 +68,13 @@ public class GalleryActivity extends BaseActivity
     //收藏
     @BindView(R.id.tv_collect)
     TextView tvCollect;
+    @BindView(R.id.iv_collect)
+    ImageView ivCollect;
+    //收藏的动画效果
+    @BindView(R.id.iv_bg_love)
+    ImageView ivBgLove;
+    @BindView(R.id.iv_img_love)
+    ImageView ivImgLove;
     //下载
     @BindView(R.id.tv_download)
     TextView tvDownload;
@@ -102,6 +119,8 @@ public class GalleryActivity extends BaseActivity
 
     private void initView() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        ivBgLove.setVisibility(View.GONE);
+        ivImgLove.setVisibility(View.GONE);
     }
 
     @Override
@@ -118,12 +137,104 @@ public class GalleryActivity extends BaseActivity
         imageInfos = infoQueryBuilder.list();
         isCollect = !imageInfos.isEmpty();
         if (isCollect) {
+            ivImgLove.setImageResource(R.mipmap.ic_loved);
+            ivCollect.setImageResource(R.mipmap.ic_loved);
             tvCollect.setText("取消收藏");
         } else {
+            ivImgLove.setImageResource(R.mipmap.ic_love);
+            ivCollect.setImageResource(R.mipmap.ic_love);
             tvCollect.setText("收藏");
+        }
+        animatePhotoLike(new View[]{ivBgLove, ivImgLove});
+    }
+
+    private static final DecelerateInterpolator DECCELERATE_INTERPOLATOR = new DecelerateInterpolator();
+    private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
+    Map<View[], AnimatorSet> likeAnimations = new HashMap<>();
+
+    private void animatePhotoLike(final View viweAnim[]) {
+        if (!likeAnimations.containsKey(viweAnim)) {
+            viweAnim[0].setVisibility(View.VISIBLE);
+            viweAnim[1].setVisibility(View.VISIBLE);
+
+            viweAnim[0].setScaleY(0.1f);
+            viweAnim[0].setScaleX(0.1f);
+            viweAnim[0].setAlpha(1f);
+            viweAnim[1].setScaleY(0.1f);
+            viweAnim[1].setScaleX(0.1f);
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            likeAnimations.put(viweAnim, animatorSet);
+
+
+            ObjectAnimator bgScaleYAnim = ObjectAnimator.ofFloat(viweAnim[0], "scaleY", 0.1f, 1f);
+            bgScaleYAnim.setDuration(200);
+            bgScaleYAnim.setInterpolator(DECCELERATE_INTERPOLATOR);
+            ObjectAnimator bgScaleXAnim = ObjectAnimator.ofFloat(viweAnim[0], "scaleX", 0.1f, 1f);
+            bgScaleXAnim.setDuration(200);
+            bgScaleXAnim.setInterpolator(DECCELERATE_INTERPOLATOR);
+            ObjectAnimator bgAlphaAnim = ObjectAnimator.ofFloat(viweAnim[0], "alpha", 1f, 0f);
+            bgAlphaAnim.setDuration(200);
+            bgAlphaAnim.setStartDelay(150);
+            bgAlphaAnim.setInterpolator(DECCELERATE_INTERPOLATOR);
+
+            ObjectAnimator imgScaleUpYAnim = ObjectAnimator.ofFloat(viweAnim[1], "scaleY", 0.1f, 1f);
+            imgScaleUpYAnim.setDuration(300);
+            imgScaleUpYAnim.setInterpolator(DECCELERATE_INTERPOLATOR);
+            ObjectAnimator imgScaleUpXAnim = ObjectAnimator.ofFloat(viweAnim[1], "scaleX", 0.1f, 1f);
+            imgScaleUpXAnim.setDuration(300);
+            imgScaleUpXAnim.setInterpolator(DECCELERATE_INTERPOLATOR);
+
+            ObjectAnimator imgScaleDownYAnim = ObjectAnimator.ofFloat(viweAnim[1], "scaleY", 1f, 0f);
+            imgScaleDownYAnim.setDuration(300);
+            imgScaleDownYAnim.setInterpolator(ACCELERATE_INTERPOLATOR);
+            ObjectAnimator imgScaleDownXAnim = ObjectAnimator.ofFloat(viweAnim[1], "scaleX", 1f, 0f);
+            imgScaleDownXAnim.setDuration(300);
+            imgScaleDownXAnim.setInterpolator(ACCELERATE_INTERPOLATOR);
+
+            animatorSet.playTogether(bgScaleYAnim, bgScaleXAnim, bgAlphaAnim, imgScaleUpYAnim, imgScaleUpXAnim);
+            animatorSet.play(imgScaleDownYAnim).with(imgScaleDownXAnim).after(imgScaleUpYAnim);
+
+            animatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    viweAnim[0].setVisibility(View.GONE);
+                    viweAnim[1].setVisibility(View.GONE);
+                }
+            });
+            animatorSet.start();
         }
     }
 
+    private void scale(final View view) {
+        Animator anim = AnimatorInflater.loadAnimator(this, R.animator.scale);
+        view.setPivotX(0.5f);
+        view.setPivotY(0.5f);
+//        //显示的调用invalidate
+//        view.invalidate();
+        anim.setTarget(view);
+        anim.start();
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
 
     //show  anim
     private void showAnim() {
@@ -206,13 +317,13 @@ public class GalleryActivity extends BaseActivity
 
 
     //返回按钮
-    @OnClick({R.id.iv_back, R.id.tv_collect, R.id.tv_setwallpaper, R.id.tv_download})
+    @OnClick({R.id.iv_back, R.id.ll_collect, R.id.ll_setwallpaper, R.id.ll_download})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_collect:
+            case R.id.ll_collect:
                 if (!isCollect) {
                     Log.e(TAG, "onClick: 收藏" + currentPosi);
                     doCollect();
@@ -222,7 +333,7 @@ public class GalleryActivity extends BaseActivity
                 initCollect();
 
                 break;
-            case R.id.tv_download:
+            case R.id.ll_download:
                 //下载的时候申请权限
                 BaseActivity.requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new RequestPermisListener() {
                     @Override
@@ -256,7 +367,7 @@ public class GalleryActivity extends BaseActivity
                 });
 
                 break;
-            case R.id.tv_setwallpaper:
+            case R.id.ll_setwallpaper:
                 ImageView imageView = (ImageView) views.get(vpGallery.getCurrentItem());
                 imageView.setDrawingCacheEnabled(true);
                 SettingUtils.setWallpaper(imageView.getDrawingCache());

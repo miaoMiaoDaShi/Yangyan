@@ -2,12 +2,16 @@ package com.xxp.yangyan.pro.base;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.xxp.yangyan.mvp.presenter.impl.MvpBasePresenter;
 import com.xxp.yangyan.mvp.view.impl.MvpActivity;
@@ -33,6 +37,10 @@ public abstract class BaseActivity<P extends MvpBasePresenter> extends MvpActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        if(Build.VERSION.SDK_INT>=21){
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(getLayoutId());
         ButterKnife.bind(this);
 

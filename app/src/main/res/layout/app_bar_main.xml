@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false">
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/activity_content" />
 
     <android.support.design.widget.AppBarLayout
+        android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:background="@drawable/shape_top"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:backgroundTint="@color/colorPrimary"
+
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="  "
-            app:elevation="3dp"/>
+            app:title="  " />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/activity_content" />
-
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
