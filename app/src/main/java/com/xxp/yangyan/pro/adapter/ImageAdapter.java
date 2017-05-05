@@ -44,23 +44,20 @@ public class ImageAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.fragment = fragment;
         this.activity = activity;
         t = (T) ((fragment == null) ? activity : fragment);
-        mLayoutInflater = LayoutInflater.from(t instanceof Activity? (Context) t :((Fragment)t).getContext());
+        mLayoutInflater = LayoutInflater.from(t instanceof Activity ? (Context) t : ((Fragment) t).getContext());
 
 
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewHolder(mLayoutInflater.inflate(R.layout.item_image_grid,parent,false));
+        return new MyViewHolder(mLayoutInflater.inflate(R.layout.item_image_grid, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
-        // 随机高度, 模拟瀑布效果.
-        if (mHeights.size() <= position) {
-            mHeights.add((int) (500 + Math.random() * 200));
-        }
+
         holder.title.setText(images.get(position).getTitle());
         if (t instanceof Fragment) {
             GlideUtils.loadImageView(fragment,
@@ -73,11 +70,19 @@ public class ImageAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         ViewGroup.LayoutParams lp = holder.img.getLayoutParams();
-        lp.height = mHeights.get(position);
+
+        if (t instanceof Activity) {
+            // 随机高度, 模拟瀑布效果.
+            if (mHeights.size() <= position) {
+                mHeights.add((int) (500 + Math.random() * 200));
+            }
+            lp.height = mHeights.get(position);
+        }
+
         holder.img.setLayoutParams(lp);
 
         //图片集如果没有标题,则应该是用户收藏图片,应该将title的背景隐藏
-        if (TextUtils.isEmpty(images.get(position).getTitle())){
+        if (TextUtils.isEmpty(images.get(position).getTitle())) {
             holder.titleLayout.setBackgroundColor(UIUtils.getColor(android.R.color.transparent));
         }
 
