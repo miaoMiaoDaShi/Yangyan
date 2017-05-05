@@ -65,6 +65,7 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
     private void initData() {
         mImageInfos = getList();
         mImageAdapter = (ImageAdapter) getAdapetr();
+        你的吗
     }
 
     @Override
