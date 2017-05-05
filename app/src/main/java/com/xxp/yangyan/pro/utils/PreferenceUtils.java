@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import com.xxp.yangyan.pro.App;
 
 /**
- * Created by 钟大爷 on 2017/2/11.
+ * Created by 钟大爷 on 2017/3/11.
  */
 
 public class PreferenceUtils {

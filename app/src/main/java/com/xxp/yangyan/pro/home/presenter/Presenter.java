@@ -1,7 +1,7 @@
 package com.xxp.yangyan.pro.home.presenter;
 
 import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.HomeData;
+import com.xxp.yangyan.pro.entity.HomeData;
 import com.xxp.yangyan.pro.home.model.Model;
 import com.xxp.yangyan.pro.home.view.HomeFragment;
 

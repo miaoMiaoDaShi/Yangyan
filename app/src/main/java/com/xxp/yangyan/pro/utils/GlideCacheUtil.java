@@ -12,8 +12,12 @@ import com.xxp.yangyan.pro.App;
 import java.io.File;
 import java.math.BigDecimal;
 
+
 /**
- * Created by 钟大爷 on 2017/2/11.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/3/16
+ * Description : Gilded缓存处理类
  */
 
 public class GlideCacheUtil {

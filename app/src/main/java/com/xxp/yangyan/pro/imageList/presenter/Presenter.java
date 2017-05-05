@@ -1,13 +1,12 @@
 package com.xxp.yangyan.pro.imageList.presenter;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.xxp.yangyan.pro.api.AnalysisHTML;
 import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.ImageInfo;
+import com.xxp.yangyan.pro.entity.ImageInfo;
 import com.xxp.yangyan.pro.imageList.model.Model;
 import com.xxp.yangyan.pro.imageList.view.ImageListView;
 
@@ -24,7 +23,7 @@ import rx.schedulers.Schedulers;
  * Created by Zcoder
  * Email : 1340751953@qq.com
  * Time :  2017/5/2
- * Description :
+ * Description : 所有以格子样式显示图片的presenter
  */
 
 public class Presenter extends BasePresenter<Model, ImageListView> {
@@ -38,8 +37,14 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
         return new Model();
     }
 
+    /**
+     * 加载数据统一调用此方法
+     *
+     * @param type 加载的类型,分为3类  1.
+     * @param page
+     */
     public void loadData(final String type, final int page) {
-
+        Log.i(TAG, "loadData: " + "type :" + type + "page :" + page);
         Observer observer = TextUtils.equals(Model.TYPE_COLLECT, type) ?
                 new Observer<List<ImageInfo>>() {
                     @Override
@@ -61,6 +66,7 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
 
                     @Override
                     public void onNext(List<ImageInfo> imageInfos) {
+                        Log.i(TAG, "onNext: imageinfo size:  " + imageInfos.size());
                         if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
                             //显示图片集
                             getView().loadGallerySuccess(imageInfos);
@@ -89,6 +95,7 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
 
             @Override
             public void onNext(ResponseBody responseBody) {
+                Log.i(TAG, "onNext: ResponseBody :"+responseBody.toString());
                 if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
                     //显示图片集
                     try {
@@ -108,6 +115,8 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
                 }
             }
         };
+
+        Log.d(TAG, "loadData: ");
         Subscription subscription = getModel()
                 .getData(type, page)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,21 +125,4 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
 
         addSubscribe(subscription);
     }
-
-    public void loadGallery(ImageInfo imageInfo, ProgressDialog dialog) {
-        dialog.setTitle("请稍后");
-        dialog.setMessage("编号: " + imageInfo.getLink() + "套图获取中..");
-        dialog.setIndeterminate(false);
-        dialog.setCancelable(false);
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                unSubscribe();
-            }
-        });
-        dialog.show();
-        loadData(Model.TYPE_PARTICULARS, Integer.parseInt(imageInfo.getLink()));
-    }
-
-
 }

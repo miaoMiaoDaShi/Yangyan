@@ -1,4 +1,4 @@
-package com.xxp.yangyan.pro.bean;
+package com.xxp.yangyan.pro.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

@@ -12,7 +12,10 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by 钟大爷 on 2017/2/9.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 网络请求关键类
  */
 
 public class ApiEngine {
@@ -37,7 +40,7 @@ public class ApiEngine {
         apiRetrofit = new Retrofit
                 .Builder()
                 .client(client)
-                .baseUrl(MMApi.MY_BASE_URL)
+                .baseUrl(MyApi.MY_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
@@ -45,7 +48,7 @@ public class ApiEngine {
         stringRetrofit = new Retrofit
                 .Builder()
                 .client(client)
-                .baseUrl(HTMLOne.MEINV_BASE_URL)
+                .baseUrl(XxxiaoApi.MEINV_BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
@@ -64,12 +67,12 @@ public class ApiEngine {
     }
 
 
-    public MMApi getMMService(){
-        return apiRetrofit.create(MMApi.class);
+    public MyApi getMMService(){
+        return apiRetrofit.create(MyApi.class);
     }
 
 
-    public HTMLOne getHContentService(){
-        return stringRetrofit.create(HTMLOne.class);
+    public XxxiaoApi getHContentService(){
+        return stringRetrofit.create(XxxiaoApi.class);
     }
 }

@@ -1,7 +1,10 @@
-package com.xxp.yangyan.pro.bean;
+package com.xxp.yangyan.pro.entity;
 
 /**
- * Created by 钟大爷 on 2017/2/4.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description :
  */
 
 public class BannerInfo {

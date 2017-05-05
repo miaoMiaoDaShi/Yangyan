@@ -10,7 +10,7 @@ import static com.xxp.yangyan.pro.utils.UIUtils.getContext;
 import static com.xxp.yangyan.pro.utils.UIUtils.onUIThread;
 
 /**
- * Created by 钟大爷 on 2017/2/23.
+ * Created by 钟大爷 on 2017/3/23.
  */
 
 public class SettingUtils {

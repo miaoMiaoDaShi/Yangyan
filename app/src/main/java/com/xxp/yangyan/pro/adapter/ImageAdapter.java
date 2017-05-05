@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xxp.yangyan.R;
-import com.xxp.yangyan.pro.bean.ImageInfo;
+import com.xxp.yangyan.pro.entity.ImageInfo;
 import com.xxp.yangyan.pro.utils.GlideUtils;
 import com.xxp.yangyan.pro.utils.UIUtils;
 
@@ -22,8 +22,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 /**
- * Created by 钟大爷 on 2017/2/5.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 所有以格子样式显示图片的RecyclerView的adapter
  */
 
 public class ImageAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

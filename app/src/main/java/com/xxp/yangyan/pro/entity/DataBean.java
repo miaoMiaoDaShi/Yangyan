@@ -1,4 +1,4 @@
-package com.xxp.yangyan.pro.bean;
+package com.xxp.yangyan.pro.entity;
 
 import java.io.Serializable;
 

@@ -1,8 +1,6 @@
 package com.xxp.yangyan.pro;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
@@ -25,11 +22,10 @@ import android.widget.RadioGroup;
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.mvp.presenter.impl.MvpBasePresenter;
 import com.xxp.yangyan.pro.base.BaseActivity;
-import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.UserInfo;
-import com.xxp.yangyan.pro.category.view.CategoryFragment;
+import com.xxp.yangyan.pro.classify.view.ClassifyFragment;
+import com.xxp.yangyan.pro.entity.UserInfo;
 import com.xxp.yangyan.pro.home.view.HomeFragment;
-import com.xxp.yangyan.pro.imageList.view.ImageCityFragment;
+import com.xxp.yangyan.pro.imageList.view.ImageListFragment;
 import com.xxp.yangyan.pro.myCenter.view.MyFragment;
 import com.xxp.yangyan.pro.utils.ActivityManager;
 import com.xxp.yangyan.pro.utils.UIUtils;
@@ -63,27 +59,17 @@ public class MainActivity extends BaseActivity implements
     //主页
     private HomeFragment mFragmentHome;
     //分类
-    private CategoryFragment mCtalkFragment;
+    private ClassifyFragment mCtalkFragment;
     //个人中心
     private MyFragment mMyFragment;
     //图城
-    private ImageCityFragment mImageCityFragment;
+    private ImageListFragment mImageListFragment;
     private MyFragment myFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            View decorView = getWindow().getDecorView();
-//            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-//            decorView.setSystemUiVisibility(option);
-//            getWindow().setStatusBarColor(Color.TRANSPARENT);
-//        }
-////        ActionBar actionBar = getSupportActionBar();
-////        actionBar.hide();
-
         ActivityManager.addActivity(this);
         initView();
         initBmob();
@@ -217,15 +203,15 @@ public class MainActivity extends BaseActivity implements
                     break;
                 case R.id.tab_2:
                     //图城
-                    if (null == mImageCityFragment) {
-                        mImageCityFragment = new ImageCityFragment();
+                    if (null == mImageListFragment) {
+                        mImageListFragment = new ImageListFragment();
                     }
-                    switchContent(mImageCityFragment);
+                    switchContent(mImageListFragment);
                     break;
                 case R.id.tab_3:
                     //分类
                     if (null == mCtalkFragment) {
-                        mCtalkFragment = new CategoryFragment();
+                        mCtalkFragment = new ClassifyFragment();
                     }
                     switchContent(mCtalkFragment);
                     break;

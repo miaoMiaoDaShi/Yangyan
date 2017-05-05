@@ -19,7 +19,7 @@ import com.xxp.yangyan.R;
 import com.xxp.yangyan.mvp.view.MvpLceView;
 import com.xxp.yangyan.pro.MainActivity;
 import com.xxp.yangyan.pro.base.BaseActivity;
-import com.xxp.yangyan.pro.bean.SplashInfo;
+import com.xxp.yangyan.pro.entity.SplashInfo;
 import com.xxp.yangyan.pro.listener.RequestPermisListener;
 import com.xxp.yangyan.pro.splash.presenter.Presenter;
 import com.xxp.yangyan.pro.utils.ActivityManager;

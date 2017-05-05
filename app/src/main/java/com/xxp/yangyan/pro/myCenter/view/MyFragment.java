@@ -15,10 +15,9 @@ import com.xxp.yangyan.R;
 import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.adapter.SettingAdapter;
 import com.xxp.yangyan.pro.base.BaseFragment;
-import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.SettingInfo;
+import com.xxp.yangyan.pro.entity.SettingInfo;
 import com.xxp.yangyan.pro.imageList.model.Model;
-import com.xxp.yangyan.pro.imageList.view.ImgLIstActivity;
+import com.xxp.yangyan.pro.imageList.view.ImageLIstActivity;
 import com.xxp.yangyan.pro.myCenter.presenter.Presenter;
 import com.xxp.yangyan.pro.utils.GlideCacheUtil;
 import com.xxp.yangyan.pro.view.CircleImageView;
@@ -31,10 +30,6 @@ import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 
 
-/**
- * Created by 钟大爷 on 2017/2/3.
- * 段子
- */
 
 public class MyFragment extends BaseFragment<Presenter> {
 
@@ -146,7 +141,7 @@ public class MyFragment extends BaseFragment<Presenter> {
                         clearGildeCache();
                         break;
                     case 1:
-                        Intent intent = new Intent(getActivity(), ImgLIstActivity.class);
+                        Intent intent = new Intent(getActivity(), ImageLIstActivity.class);
                         intent.putExtra("type", Model.TYPE_COLLECT);
                         startActivity(intent);
                         break;
@@ -157,7 +152,6 @@ public class MyFragment extends BaseFragment<Presenter> {
                         startActivity(new Intent(getActivity(), AboutActivity.class));
                         break;
                     case 4:
-                        joinQQGroup(App.QQKEY);
                         break;
                 }
             }

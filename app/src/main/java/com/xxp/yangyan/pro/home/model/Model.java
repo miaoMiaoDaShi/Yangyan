@@ -2,7 +2,7 @@ package com.xxp.yangyan.pro.home.model;
 
 import com.xxp.yangyan.mvp.model.MvpModel;
 import com.xxp.yangyan.pro.api.ApiEngine;
-import com.xxp.yangyan.pro.bean.HomeData;
+import com.xxp.yangyan.pro.entity.HomeData;
 
 import rx.Observable;
 

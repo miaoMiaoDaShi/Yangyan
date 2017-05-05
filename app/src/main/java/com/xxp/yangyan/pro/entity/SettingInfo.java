@@ -1,4 +1,4 @@
-package com.xxp.yangyan.pro.bean;
+package com.xxp.yangyan.pro.entity;
 
 /**
  * Created by 钟大爷 on 2017/2/4.

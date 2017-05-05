@@ -4,8 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+
 /**
- * Created by 钟大爷 on 2017/2/23.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 轮播图的适配器类
  */
 
 public class ViewPager extends android.support.v4.view.ViewPager {

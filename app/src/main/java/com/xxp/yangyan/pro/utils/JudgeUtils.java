@@ -7,7 +7,7 @@ import java.util.Calendar;
 import static com.xxp.yangyan.pro.utils.PreferenceUtils.getSP;
 
 /**
- * Created by 钟大爷 on 2017/2/3.
+ * Created by 钟大爷 on 2017/3/3.
  */
 
 public class JudgeUtils {

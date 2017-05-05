@@ -1,9 +1,8 @@
 package com.xxp.yangyan.pro.myCenter.presenter;
 
 import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.CategoryInfoData;
-import com.xxp.yangyan.pro.category.model.Model;
-import com.xxp.yangyan.pro.category.view.CategoryFragment;
+import com.xxp.yangyan.pro.entity.ClassifyInfoData;
+import com.xxp.yangyan.pro.classify.model.Model;
 import com.xxp.yangyan.pro.myCenter.view.MyFragment;
 
 import rx.Observer;
@@ -32,7 +31,7 @@ public class Presenter extends BasePresenter<Model, MyFragment> {
                 .getData()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<CategoryInfoData>() {
+                .subscribe(new Observer<ClassifyInfoData>() {
                     @Override
                     public void onCompleted() {
 
@@ -43,7 +42,7 @@ public class Presenter extends BasePresenter<Model, MyFragment> {
                     }
 
                     @Override
-                    public void onNext(CategoryInfoData categoryInfos) {
+                    public void onNext(ClassifyInfoData categoryInfos) {
                     }
                 });
         addSubscribe(subscription);

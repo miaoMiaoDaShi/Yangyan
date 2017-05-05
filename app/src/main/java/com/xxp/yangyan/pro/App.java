@@ -5,8 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
-import com.xxp.yangyan.pro.bean.DaoMaster;
-import com.xxp.yangyan.pro.bean.DaoSession;
+import com.xxp.yangyan.pro.entity.DaoMaster;
+import com.xxp.yangyan.pro.entity.DaoSession;
 import com.xxp.yangyan.pro.utils.APPInfo;
 import com.xxp.yangyan.pro.utils.ActivityManager;
 import com.xxp.yangyan.pro.utils.JudgeUtils;
@@ -16,11 +16,13 @@ import org.greenrobot.greendao.database.Database;
 import java.util.List;
 
 /**
- * Created by 钟大爷 on 2017/2/3.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description :
  */
 
 public class App extends Application {
-    public static String QQKEY = "4vpE_9FsVxek-ys2j81KqX5Hw9yx_j7R";
     public static final int xxp  = 1997;
     //第一次进入软件
     public static boolean isFirst = true;
@@ -51,6 +53,9 @@ public class App extends Application {
         initGreenDao();
     }
 
+    /**
+     * GreenDao的初始化
+     */
     private void initGreenDao() {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext,"yangyang.db");
         Database base = helper.getWritableDb();
@@ -75,6 +80,9 @@ public class App extends Application {
         return mCurrentThreadId;
     }
 
+    /**
+     * 退出app
+     */
     public static void exitApp(){
         List<Activity> activities = ActivityManager.getActivitys();
         if(null!=activities){

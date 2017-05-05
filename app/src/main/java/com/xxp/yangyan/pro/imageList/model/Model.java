@@ -1,13 +1,11 @@
 package com.xxp.yangyan.pro.imageList.model;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.xxp.yangyan.mvp.model.MvpModel;
 import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.api.ApiEngine;
-import com.xxp.yangyan.pro.bean.ImageInfo;
-import com.xxp.yangyan.pro.bean.ImageInfoDao;
+import com.xxp.yangyan.pro.entity.ImageInfo;
 
 import java.util.List;
 
@@ -35,12 +33,16 @@ public class Model implements MvpModel {
     private Boolean isFirstLoad = true;
 
     public Observable getData(String type, int page) {
+        Log.d(TAG, "getData: ");
         switch (type) {
             case TYPE_NEW:
+                Log.d(TAG, "getData: TYPE_NEW");
                 return ApiEngine.getInstance().getHContentService().getHomePage(page);
             case TYPE_PARTICULARS:
+                Log.d(TAG, "getData: TYPE_PARTICULARS");
                 return ApiEngine.getInstance().getHContentService().getParticulars(page);
             case TYPE_COLLECT:
+                Log.d(TAG, "getData: TYPE_COLLECT");
                 return Observable.create(new Observable.OnSubscribe<List<ImageInfo>>() {
                     @Override
                     public void call(Subscriber<? super List<ImageInfo>> subscriber) {
@@ -57,6 +59,7 @@ public class Model implements MvpModel {
                     }
                 });
             default:
+                Log.d(TAG, "getData: default");
                 return ApiEngine.getInstance().getHContentService().getTypePage(type, page);
         }
 

@@ -1,8 +1,8 @@
-package com.xxp.yangyan.pro.category.model;
+package com.xxp.yangyan.pro.classify.model;
 
 import com.xxp.yangyan.mvp.model.MvpModel;
 import com.xxp.yangyan.pro.api.ApiEngine;
-import com.xxp.yangyan.pro.bean.CategoryInfoData;
+import com.xxp.yangyan.pro.entity.ClassifyInfoData;
 
 import rx.Observable;
 
@@ -14,7 +14,7 @@ import rx.Observable;
  */
 
 public class Model implements MvpModel {
-    public Observable<CategoryInfoData> getData() {
+    public Observable<ClassifyInfoData> getData() {
         return ApiEngine.getInstance().getMMService().getCategoryPage();
     }
 }

@@ -1,8 +1,11 @@
 package com.xxp.yangyan.pro.base;
 
+
 /**
- * Created by 钟大爷 on 2017/2/9.
- * MVP model的接口
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 项目的Model的基类
  */
 
 public interface BaseModel {

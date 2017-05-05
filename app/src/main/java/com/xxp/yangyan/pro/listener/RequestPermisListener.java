@@ -3,7 +3,10 @@ package com.xxp.yangyan.pro.listener;
 import java.util.List;
 
 /**
- * Created by 钟大爷 on 2017/2/17.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 请求权限的监听
  */
 
 public interface RequestPermisListener {

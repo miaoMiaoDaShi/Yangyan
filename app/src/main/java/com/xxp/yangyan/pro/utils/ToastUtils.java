@@ -5,8 +5,10 @@ import android.widget.Toast;
 import com.xxp.yangyan.pro.App;
 
 /**
- * Created by 钟大爷 on 2017/2/8.
- * Toast类
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description :
  */
 
 public class ToastUtils {

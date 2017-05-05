@@ -1,7 +1,7 @@
 package com.xxp.yangyan.pro.splash.presenter;
 
 import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.SplashInfo;
+import com.xxp.yangyan.pro.entity.SplashInfo;
 import com.xxp.yangyan.pro.splash.model.Model;
 import com.xxp.yangyan.pro.splash.view.SplashActivity;
 

@@ -28,12 +28,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by 钟大爷 on 2017/2/23.
- */
-
-
-/**
- * Created by 钟大爷 on 2017/2/23.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/3/16
+ * Description : 轮播view
  */
 
 public class BannerView extends RelativeLayout {

@@ -1,10 +1,6 @@
 package com.xxp.yangyan.pro.api;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.util.Log;
-
-import com.xxp.yangyan.pro.bean.ImageInfo;
+import com.xxp.yangyan.pro.entity.ImageInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +9,13 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 网页数据的解析从HTMLString 到ImageInfo的集合对象,解析器:jsoup
+ */
 
 public class AnalysisHTML {
     //获取主页的指定内容
@@ -31,7 +34,7 @@ public class AnalysisHTML {
                 image.setTitle(title);
                 image.setCatalogue(catalogue);
                 image.setImgUrl(imgUrl);
-                image.setLink(link.replace(HTMLOne.MEINV_BASE_URL, ""));
+                image.setLink(link.replace(XxxiaoApi.MEINV_BASE_URL, ""));
 
                 images.add(image);
             }
@@ -39,7 +42,6 @@ public class AnalysisHTML {
 
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return images;
@@ -54,64 +56,14 @@ public class AnalysisHTML {
             for (Element element : elements) {
                 String imgUrl = element.attr("href");
                 String imgDisplay = element.select("img").attr("src");
-
                 ImageInfo image = new ImageInfo();
                 image.setImgUrl(imgUrl);
-                Log.i("捕捉", "ParticularsToList: "+image.getImgUrl());
-
                 images.add(image);
 
             }
-
-
-
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return images;
-    }
-    public static void loadGallery(final int position, final List<ImageInfo> imageList, final Context context) {
-        final ProgressDialog mDialog;
-        mDialog = new ProgressDialog(context);
-        mDialog.setTitle("请稍后");
-        mDialog.setMessage("编号: "+imageList.get(position).getLink()+"套图获取中..");
-        mDialog.setIndeterminate(false);
-        mDialog.setCancelable(false);
-        mDialog.show();
-
-//        ApiManager
-//                .getCompositeSubscription()
-//                .add(ApiManager
-//                        .getContentService()
-//                        .getParticulars(imageList.get(position).getLink())
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Observer<ResponseBody>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                            }
-//
-//                            @Override
-//                            public void onNext(ResponseBody s) {
-//
-//                                List<ImageInfo> images = new ArrayList<ImageInfo>();
-//                                try {
-//                                    images = (ParticularsToList(s.string(),imageList.get(position).getLink()));
-//                                    mDialog.dismiss();
-//                                    Intent intent = new Intent(UIUtils.getContext(), GalleryActivity.class);
-//                                    intent.putExtra("gallery", (Serializable) images);
-//                                    context.startActivity(intent);
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                            }
-//                        }));
     }
 }

@@ -2,7 +2,7 @@ package com.xxp.yangyan.pro.splash.model;
 
 import com.xxp.yangyan.mvp.model.MvpModel;
 import com.xxp.yangyan.pro.api.ApiEngine;
-import com.xxp.yangyan.pro.bean.SplashInfo;
+import com.xxp.yangyan.pro.entity.SplashInfo;
 
 import rx.Observable;
 

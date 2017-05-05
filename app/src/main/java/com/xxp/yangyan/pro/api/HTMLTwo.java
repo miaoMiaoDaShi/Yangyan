@@ -6,7 +6,10 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 /**
- * Created by 钟大爷 on 2017/3/4.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 废弃的接口.............
  */
 
 public interface HTMLTwo {

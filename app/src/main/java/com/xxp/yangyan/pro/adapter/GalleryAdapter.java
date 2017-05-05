@@ -6,10 +6,12 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+
 /**
- * Created by 钟大爷 on 2017/2/5.
- * 图片浏览的viewPager的Adapter
- * 这个暂时预备使用   因为图片浏览  有时候还是无线循环比较好
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 图片浏览的viewPager的Adapter  就是浏览套图的那个画廊界面
  */
 
 public class GalleryAdapter extends PagerAdapter {

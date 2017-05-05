@@ -1,10 +1,10 @@
-package com.xxp.yangyan.pro.bean;
+package com.xxp.yangyan.pro.entity;
 
 /**
  * Created by 钟大爷 on 2017/2/12.
  */
 
-public class CategoryInfo {
+public class ClassifyInfo {
     String title;
     String link;
     String imgUrl;

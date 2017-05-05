@@ -4,6 +4,14 @@ import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+
+/**
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/3/16
+ * Description :
+ */
+
 public class BannerScroll extends Scroller {
 
     private int mDuration = 2000;

@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".pro.imageList.view.ImgLIstActivity"
+            android:name=".pro.imageList.view.ImageLIstActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".pro.MainActivity"

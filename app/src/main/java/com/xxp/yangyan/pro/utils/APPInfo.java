@@ -6,7 +6,10 @@ import android.content.pm.PackageManager;
 import com.xxp.yangyan.pro.App;
 
 /**
- * Created by 钟大爷 on 2017/2/15.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 提供app的一些信息
  */
 
 public class APPInfo {

@@ -1,14 +1,9 @@
-package com.xxp.yangyan.pro.category.presenter;
+package com.xxp.yangyan.pro.classify.presenter;
 
-import android.content.Context;
-
-import com.xxp.yangyan.mvp.view.MvpView;
 import com.xxp.yangyan.pro.base.BasePresenter;
-import com.xxp.yangyan.pro.bean.CategoryInfoData;
-import com.xxp.yangyan.pro.category.model.Model;
-import com.xxp.yangyan.pro.category.view.CategoryFragment;
-
-import java.util.List;
+import com.xxp.yangyan.pro.entity.ClassifyInfoData;
+import com.xxp.yangyan.pro.classify.model.Model;
+import com.xxp.yangyan.pro.classify.view.ClassifyFragment;
 
 import rx.Observer;
 import rx.Subscription;
@@ -22,7 +17,7 @@ import rx.schedulers.Schedulers;
  * Description :
  */
 
-public class Presenter extends BasePresenter<Model, CategoryFragment> {
+public class Presenter extends BasePresenter<Model, ClassifyFragment> {
     public Presenter() {
     }
 
@@ -36,7 +31,7 @@ public class Presenter extends BasePresenter<Model, CategoryFragment> {
                 .getData()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<CategoryInfoData>() {
+                .subscribe(new Observer<ClassifyInfoData>() {
                     @Override
                     public void onCompleted() {
                         getView().showContent();
@@ -48,7 +43,7 @@ public class Presenter extends BasePresenter<Model, CategoryFragment> {
                     }
 
                     @Override
-                    public void onNext(CategoryInfoData categoryInfos) {
+                    public void onNext(ClassifyInfoData categoryInfos) {
 
                         getView().showData(categoryInfos);
                     }

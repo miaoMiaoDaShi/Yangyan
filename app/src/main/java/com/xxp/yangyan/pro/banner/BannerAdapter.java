@@ -7,8 +7,14 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-//轮播图的适配器类
-    public class BannerAdapter extends PagerAdapter {
+/**
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/3/16
+ * Description : 轮播图的适配器类
+ */
+
+public class BannerAdapter extends PagerAdapter {
         List<ImageView> viewList;
 
         public BannerAdapter(List<ImageView> viewList) {

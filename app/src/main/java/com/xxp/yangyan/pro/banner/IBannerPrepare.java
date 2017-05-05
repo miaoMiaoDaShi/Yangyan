@@ -6,9 +6,10 @@ import android.widget.ImageView;
 import java.util.List;
 
 /**
- * Created by 钟大爷 on 2017/3/18.
- *
- * 使用轮播,必须实现该接口
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/3/16
+ * Description : 使用轮播实现的接口
  */
 
 public interface IBannerPrepare {

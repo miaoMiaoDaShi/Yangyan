@@ -1,25 +1,28 @@
 package com.xxp.yangyan.pro.listener;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 
 import java.util.List;
 
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
-import jp.wasabeef.recyclerview.animators.ScaleInLeftAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+
+/**
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/3/3
+ * Description : 自己的RecyclerView的辅助类
+ */
 
 public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListener {
     //是否加载中.
     private boolean loading = false;
 
     //当前加载的是第几页
-    private int currentPage = 0;
+    private int currentPage;
+    //默认的第一页,页码
+    private final int DEFAULT_PAGE = 1;
 
     //数据到是否底了...
     private boolean end = false;
@@ -43,11 +46,6 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
         recyclerView = getRecylerView();
         recyclerView.setLayoutManager(getLayoutManager());
         recyclerView.setAdapter(new ScaleInAnimationAdapter(getAdapter()));
-//        recyclerView.setItemAnimator(new SlideInUpAnimator());
-//        recyclerView.getItemAnimator().setAddDuration(2000);
-//        recyclerView.getItemAnimator().setChangeDuration(2000);
-//        recyclerView.getItemAnimator().setMoveDuration(2000);
-//        recyclerView.getItemAnimator().setRemoveDuration(2000);
         recyclerView.addOnScrollListener(this);
     }
 
@@ -56,7 +54,7 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
     //重置状态
     public void reset() {
         loading = false;
-        currentPage = 0;
+        currentPage = DEFAULT_PAGE;
     }
 
     //获取布局管理
@@ -82,8 +80,7 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
         super.onScrolled(recyclerView, dx, dy);
         //当前状态并不是正在加载,且RecylerView满足加载的条件
         if (!isLoading() && canLoadMore(recyclerView) && !end) {
-            onLoad();
-            loading = true;
+            onLoadMore();
             Log.i("下拉加载", "onScrolled: ");
         }
 
@@ -94,42 +91,50 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
     public void refresh() {
         reset();
         loading = true;
-        onLoad();
+        loadData();
     }
 
     //将图片显示在RecylerView上
-    public void showImageListToView(List<T> imageInfos) {
-        if (null != imageInfos) {
-            int listCount = imageInfos.size();
-            if(currentPage==1){
-                lists.clear();
-                lists.addAll(imageInfos);
+    public void showImageListToView(List<T> lists) {
+        Log.d(TAG, "showImageListToView: ");
+        if (null != lists) {
+            int listCount = lists.size();
+            if (currentPage == DEFAULT_PAGE) {
+                this.lists.clear();
+                this.lists.addAll(lists);
             } else {
-                lists.addAll(imageInfos);
+                this.lists.addAll(lists);
             }
-            int pos = imageInfos.size();
+            int pos = lists.size();
             if (pos > 0) {
                 pos--;
+                Log.d(TAG, "showImageListToView: adapter" + getAdapter());
                 getAdapter().notifyItemChanged(pos, listCount);
-                getRefreshLayout().setRefreshing(false);
-                loading = false;
+                setLoadStatus(false);
             }
         }
     }
 
 
-    public void onLoad() {
+    /**
+     * 加载更多数据
+     */
+    public void onLoadMore() {
         currentPage++;
-        Log.i("当前的页数", "onLoad: " + currentPage);
         getRefreshLayout().post(new Runnable() {
             @Override
             public void run() {
-                getRefreshLayout().setRefreshing(true);
+                setLoadStatus(true);
                 loadData();
             }
         });
 
 
+    }
+
+    private void setLoadStatus(boolean b) {
+        loading = b;
+        getRefreshLayout().setRefreshing(b);
     }
 
 

@@ -7,13 +7,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xxp.yangyan.R;
-import com.xxp.yangyan.pro.bean.SettingInfo;
+import com.xxp.yangyan.pro.entity.SettingInfo;
 import com.xxp.yangyan.pro.utils.UIUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+/**
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 个人中心,设置的adapter
+ */
 
 public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<SettingInfo> settings;
@@ -34,9 +41,10 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.image.setImageResource(settings.get(position).getImage());
         holder.title.setText(settings.get(position).getTitle());
 
-        if(position==0){
-            holder.more.setVisibility(View.VISIBLE);
-            holder.more.setText(settings.get(position).getCacheCount());
+        //第0个条目是关于缓存信息的,所以要将大小显示在后面,默认该textVie为不可见
+        if (position == 0) {
+            holder.info.setVisibility(View.VISIBLE);
+            holder.info.setText(settings.get(position).getCacheCount());
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,8 +64,8 @@ public class SettingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @BindView(R.id.tv_setting)
         TextView title;
-        @BindView(R.id.tv_more)
-        TextView more;
+        @BindView(R.id.tv_info)
+        TextView info;
         @BindView(R.id.civ_setting)
         ImageView image;
 

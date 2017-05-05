@@ -10,8 +10,12 @@ import com.xxp.yangyan.mvp.view.MvpView;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
+
 /**
- * Created by 钟大爷 on 2017/2/13.
+ * Created by Zcoder
+ * Email : 1340751953@qq.com
+ * Time :  2017/5/2
+ * Description : 项目的presenter基类
  */
 
 public abstract class BasePresenter<M extends MvpModel, V extends MvpView> extends MvpBasePresenter<V> {
