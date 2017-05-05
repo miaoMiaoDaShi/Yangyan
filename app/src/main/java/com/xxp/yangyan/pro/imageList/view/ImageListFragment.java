@@ -204,7 +204,7 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
     public void loadGallerySuccess(List<ImageInfo> Imageinfos) {
         mDialog.dismiss();
         Intent intent = new Intent(App.getmContext(), GalleryActivity.class);
-        intent.putExtra("gallery", (Serializable) Imageinfos);
+        intent.putExtra(GalleryActivity.KEY_IMAGES, (Serializable) Imageinfos);
         startActivity(intent);
     }
 }
