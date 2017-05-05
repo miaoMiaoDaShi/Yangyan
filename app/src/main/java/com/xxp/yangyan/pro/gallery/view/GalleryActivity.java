@@ -2,7 +2,6 @@ package com.xxp.yangyan.pro.gallery.view;
 
 import android.Manifest;
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -92,10 +91,15 @@ public class GalleryActivity extends BaseActivity
     //view集合
     private List<View> views;
     //当前的position
-    private int currentPosi = 0;
+    private int mCurrentPosi = 0;
     private String TAG = "GalleryActivity";
 
     private boolean isHide = true;
+
+    //获取intent传过来的索引值得key
+    public static final String KEY_POSITION = "key_position";
+    //获取intent传过来的图片信息集合得key
+    public static final String KEY_IMAGES = "key_images";
 
     private PhotoViewAttacher photoViewAttacher;
     private boolean isCollect;
@@ -105,18 +109,26 @@ public class GalleryActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         ActivityManager.addActivity(this);
         initView();
+        initData();
         //对viewPager的数据的加载
         initViewPager();
-
         hideAnim();
-
         //是否收藏的界面的初始化
         initCollect();
 
     }
 
+    private void initData() {
+        //获得传过来的图片集合
+        images = (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGES) == null ?
+                new ArrayList<ImageInfo>() :
+                (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGES);
+        //获得前面点击的索引值
+        mCurrentPosi = getIntent().getIntExtra(KEY_POSITION, 0);
+        views = new ArrayList<>();
+    }
+
     private void initView() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         ivBgLove.setVisibility(View.GONE);
         ivImgLove.setVisibility(View.GONE);
     }
@@ -131,7 +143,7 @@ public class GalleryActivity extends BaseActivity
         List<ImageInfo> imageInfos = new ArrayList<>();
         ImageInfoDao imageInfoDao = App.getDaoSession().getImageInfoDao();
         QueryBuilder<ImageInfo> infoQueryBuilder = imageInfoDao.queryBuilder();
-        infoQueryBuilder.where(ImageInfoDao.Properties.ImgUrl.eq(images.get(currentPosi).getImgUrl()));
+        infoQueryBuilder.where(ImageInfoDao.Properties.ImgUrl.eq(images.get(mCurrentPosi).getImgUrl()));
         imageInfos = infoQueryBuilder.list();
         isCollect = !imageInfos.isEmpty();
         if (isCollect) {
@@ -204,37 +216,7 @@ public class GalleryActivity extends BaseActivity
         }
     }
 
-    private void scale(final View view) {
-        Animator anim = AnimatorInflater.loadAnimator(this, R.animator.scale);
-        view.setPivotX(0.5f);
-        view.setPivotY(0.5f);
-//        //显示的调用invalidate
-//        view.invalidate();
-        anim.setTarget(view);
-        anim.start();
-        anim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                view.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-    }
-
-    //show  anim
+    //显示上下的操作条
     private void showAnim() {
         RelativeLayout.LayoutParams topBarlp = (RelativeLayout.LayoutParams) topBar.getLayoutParams();
         topBarlp.setMargins(0, -topBarlp.height, 0, 0);
@@ -255,7 +237,7 @@ public class GalleryActivity extends BaseActivity
         isHide = false;
     }
 
-    //hide anim
+    //隐藏上下的操作条
     private void hideAnim() {
         RelativeLayout.LayoutParams topBarlp = (RelativeLayout.LayoutParams) topBar.getLayoutParams();
         topBarlp.setMargins(0, 0, 0, 0);
@@ -276,11 +258,8 @@ public class GalleryActivity extends BaseActivity
         isHide = true;
     }
 
-    //init Gallery View
+    //画廊的初始化
     private void initViewPager() {
-        images = new ArrayList<>();
-        views = new ArrayList<>();
-        images = (List<ImageInfo>) getIntent().getSerializableExtra("gallery");
         for (int i = 0; i < images.size(); i++) {
 
             final ImageView imageView = new ImageView(this);
@@ -294,10 +273,8 @@ public class GalleryActivity extends BaseActivity
                         @Override
                         public void onViewTap(View view, float x, float y) {
                             if (isHide) {
-                                Log.e(TAG, "onClick: showAnim");
                                 showAnim();
                             } else {
-                                Log.e(TAG, "onClick: hideAnim");
                                 hideAnim();
                             }
                         }
@@ -309,8 +286,8 @@ public class GalleryActivity extends BaseActivity
         vpGallery.setAdapter(new GalleryAdapter(views));
         vpGallery.addOnPageChangeListener(this);
 
-        vpGallery.setCurrentItem(currentPosi);
-        tvGalleryCount.setText(currentPosi + 1 + "/" + views.size());
+        vpGallery.setCurrentItem(mCurrentPosi);
+        tvGalleryCount.setText(mCurrentPosi + 1 + "/" + views.size());
     }
 
 
@@ -323,7 +300,6 @@ public class GalleryActivity extends BaseActivity
                 break;
             case R.id.ll_collect:
                 if (!isCollect) {
-                    Log.e(TAG, "onClick: 收藏" + currentPosi);
                     doCollect();
                 } else {
                     notCollect();
@@ -338,7 +314,7 @@ public class GalleryActivity extends BaseActivity
                     public void onGranted() {
                         RxVolley.download(
                                 IOUtils.getSDPath() + System.currentTimeMillis() + ".jpg"
-                                , images.get(currentPosi).getImgUrl(), new ProgressListener() {
+                                , images.get(mCurrentPosi).getImgUrl(), new ProgressListener() {
                                     @Override
                                     public void onProgress(long transferredBytes, long totalSize) {
 
@@ -375,12 +351,12 @@ public class GalleryActivity extends BaseActivity
     }
 
     private void notCollect() {
-        App.getDaoSession().getImageInfoDao().delete(images.get(currentPosi));
+        App.getDaoSession().getImageInfoDao().delete(images.get(mCurrentPosi));
     }
 
     //收藏当前的图片
     private void doCollect() {
-        App.getDaoSession().getImageInfoDao().insert(images.get(currentPosi));
+        App.getDaoSession().getImageInfoDao().insert(images.get(mCurrentPosi));
     }
 
 
@@ -390,9 +366,8 @@ public class GalleryActivity extends BaseActivity
 
     @Override
     public void onPageSelected(int position) {
-        currentPosi = position;
+        mCurrentPosi = position;
         initCollect();
-        Log.e(TAG, "onPageSelected: " + position);
         tvGalleryCount.setText(position + 1 + "/" + views.size());
     }
 

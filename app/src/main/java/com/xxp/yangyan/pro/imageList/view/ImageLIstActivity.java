@@ -4,16 +4,22 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.pro.adapter.ImageAdapter;
 import com.xxp.yangyan.pro.base.BaseRecyclerViewActivity;
+import com.xxp.yangyan.pro.classify.view.ClassifyFragment;
 import com.xxp.yangyan.pro.entity.ImageInfo;
 import com.xxp.yangyan.pro.gallery.view.GalleryActivity;
 import com.xxp.yangyan.pro.imageList.model.Model;
@@ -24,6 +30,7 @@ import com.xxp.yangyan.pro.utils.UIUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,6 +38,9 @@ import butterknife.OnClick;
 
 public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, ImageInfo>
         implements ImageListView<List<ImageInfo>> {
+
+    private final String TAG = "ImageLIstActivity";
+
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.tv_title)
@@ -40,9 +50,16 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
     @BindView(R.id.swipe)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private final String TAG = "ImageLIstActivity";
+    private final String mClassifys[] = {"性感美女", "少女萝莉", "美乳香臀", "丝袜美腿", "性感特写", "日韩东亚"
+            , "女神合集", "欧美女神"};
+    private final String mLinks[] = {"xinggan", "shaonv", "mrxt", "swmt", "xgtx", "rihandongya", "collection",
+            "oumei"};
+
     private ImageAdapter mImageAdapter;
     private List<ImageInfo> mImageInfos;
+    private Map<String, String> mTypeTitle;
+
+    public static final String KEY_TYPE = "key_type";
     /**
      * 加载的类型
      * 1.加载首页的数据(从网络)
@@ -52,6 +69,8 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
      */
     private String mType;
     private ProgressDialog mDialog;
+    //点击的位置
+    private int mPosition;
 
 
     @Override
@@ -66,6 +85,7 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
         mImageAdapter.setOnItemClick(new ImageAdapter.OnItemClick() {
             @Override
             public void onClickListener(int position) {
+                mPosition = position;
                 if (TextUtils.equals(Model.TYPE_COLLECT, mType)) {
                     startToGallery(mImageInfos);
                 } else {
@@ -105,8 +125,20 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
 
 
     private void initData() {
-        mType = getIntent().getStringExtra("type");
-        tvTitle.setText(mType);
+        //
+        mTypeTitle = new ArrayMap<>();
+        for (int i = 0; i < mClassifys.length; i++) {
+            mTypeTitle.put(mLinks[i], mClassifys[i]);
+        }
+
+        //获得intent传来的类型
+        mType = getIntent().getStringExtra(KEY_TYPE);
+        if (TextUtils.equals(Model.TYPE_COLLECT, mType)) {
+            tvTitle.setText("我的收藏");
+        } else {
+            tvTitle.setText(mTypeTitle.get(mType));
+        }
+
         mImageInfos = getList();
         mImageAdapter = (ImageAdapter) getAdapetr();
     }
@@ -153,7 +185,8 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
      */
     private void startToGallery(List<ImageInfo> images) {
         Intent intent = new Intent(UIUtils.getContext(), GalleryActivity.class);
-        intent.putExtra("gallery", (Serializable) images);
+        intent.putExtra(GalleryActivity.KEY_IMAGES, (Serializable) images);
+        intent.putExtra(GalleryActivity.KEY_POSITION, mPosition);
         startActivity(intent);
     }
 

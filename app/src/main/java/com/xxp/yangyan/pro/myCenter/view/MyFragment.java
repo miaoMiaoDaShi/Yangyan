@@ -30,7 +30,6 @@ import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 
 
-
 public class MyFragment extends BaseFragment<Presenter> {
 
     @BindView(R.id.photo)
@@ -142,7 +141,7 @@ public class MyFragment extends BaseFragment<Presenter> {
                         break;
                     case 1:
                         Intent intent = new Intent(getActivity(), ImageLIstActivity.class);
-                        intent.putExtra("type", Model.TYPE_COLLECT);
+                        intent.putExtra(ImageLIstActivity.KEY_TYPE, Model.TYPE_COLLECT);
                         startActivity(intent);
                         break;
                     case 2:

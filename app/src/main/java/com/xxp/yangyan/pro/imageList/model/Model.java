@@ -28,21 +28,18 @@ public class Model implements MvpModel {
     public static final String TYPE_COLLECT = "type_collect";
     //详细的写真集合
     public static final String TYPE_PARTICULARS = "type_particulars";
+    
 
     //收藏,,数据库加载只加载一次,避免重复
     private Boolean isFirstLoad = true;
 
     public Observable getData(String type, int page) {
-        Log.d(TAG, "getData: ");
         switch (type) {
             case TYPE_NEW:
-                Log.d(TAG, "getData: TYPE_NEW");
                 return ApiEngine.getInstance().getHContentService().getHomePage(page);
             case TYPE_PARTICULARS:
-                Log.d(TAG, "getData: TYPE_PARTICULARS");
                 return ApiEngine.getInstance().getHContentService().getParticulars(page);
             case TYPE_COLLECT:
-                Log.d(TAG, "getData: TYPE_COLLECT");
                 return Observable.create(new Observable.OnSubscribe<List<ImageInfo>>() {
                     @Override
                     public void call(Subscriber<? super List<ImageInfo>> subscriber) {
@@ -59,7 +56,6 @@ public class Model implements MvpModel {
                     }
                 });
             default:
-                Log.d(TAG, "getData: default");
                 return ApiEngine.getInstance().getHContentService().getTypePage(type, page);
         }
 

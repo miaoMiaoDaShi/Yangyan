@@ -3,6 +3,7 @@ package com.xxp.yangyan.pro.classify.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,12 +23,11 @@ import com.xxp.yangyan.pro.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
 /**
- * Created by 钟大爷 on 2017/2/3.
- * 段子om 美女图片 宅男女神 养眼套图
  * 最新美女
  * 女神笑了
  * 性感美女
@@ -49,11 +49,6 @@ public class ClassifyFragment extends BaseRecyclerViewFragment<Presenter, Classi
     @BindView(R.id.swipe_category)
     SwipeRefreshLayout swipeClassify;
     private List<ClassifyInfo> mClassifyInfo;
-    private final String category[] = {"性感美女", "少女萝莉", "美乳香臀", "丝袜美腿", "性感特写", "日韩东亚"
-            , "女神合集", "欧美女神"};
-
-    private final String link[] = {"xinggan", "shaonv", "mrxt", "swmt", "xgtx", "rihandongya", "collection",
-            "oumei"};
     private ClassifyAdapter mClassifyAdapter;
 
     @Override
@@ -80,7 +75,7 @@ public class ClassifyFragment extends BaseRecyclerViewFragment<Presenter, Classi
             @Override
             public void onClickListener(int position) {
                 Intent intent = new Intent(UIUtils.getContext(), ImageLIstActivity.class);
-                intent.putExtra("type", mClassifyInfo.get(position).getLink());
+                intent.putExtra(ImageLIstActivity.KEY_TYPE, mClassifyInfo.get(position).getLink());
                 startActivity(intent);
             }
         });

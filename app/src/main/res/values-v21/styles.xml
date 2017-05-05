@@ -4,7 +4,6 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -12,5 +11,9 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:colorForeground">@android:color/transparent</item>
+    </style>
+
+    <style name="SplashActivityTheme" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

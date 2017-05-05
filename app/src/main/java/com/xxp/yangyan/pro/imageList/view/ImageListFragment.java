@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -85,6 +86,10 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
         return mImageAdapter = mImageAdapter == null ? new ImageAdapter(getList(), this, null) : mImageAdapter;
     }
 
+    @Override
+    protected RecyclerView.LayoutManager getLayoutManager() {
+        return new GridLayoutManager(getActivity(),1);
+    }
 
     private void recylerViewClickListener() {
         mImageAdapter.setOnItemClick(new ImageAdapter.OnItemClick() {

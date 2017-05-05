@@ -20,7 +20,6 @@ import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.api.MyApi;
 import com.xxp.yangyan.pro.banner.BannerView;
 import com.xxp.yangyan.pro.banner.IBannerPrepare;
-import com.xxp.yangyan.pro.base.BaseRefreshLayoutActivity;
 import com.xxp.yangyan.pro.base.BaseRefreshLayoutFragment;
 import com.xxp.yangyan.pro.entity.HomeData;
 import com.xxp.yangyan.pro.home.presenter.Presenter;
@@ -125,20 +124,20 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
     }
 
 
-    private final String type[] = {"shaonv", "rihandongya", "swmt"};
+    private final String mTypes[] = {"shaonv", "rihandongya", "swmt"};
 
     @OnClick({R.id.iv_push_1, R.id.iv_push_2, R.id.iv_push_3})
     public void onClick(View view) {
         Intent intent = new Intent(UIUtils.getContext(), ImageLIstActivity.class);
         switch (view.getId()) {
             case R.id.iv_push_1:
-                intent.putExtra("type", type[0]);
+                intent.putExtra(ImageLIstActivity.KEY_TYPE, mTypes[0]);
                 break;
             case R.id.iv_push_2:
-                intent.putExtra("type", type[1]);
+                intent.putExtra(ImageLIstActivity.KEY_TYPE, mTypes[1]);
                 break;
             case R.id.iv_push_3:
-                intent.putExtra("type", type[2]);
+                intent.putExtra(ImageLIstActivity.KEY_TYPE, mTypes[2]);
                 break;
         }
         startActivity(intent);
