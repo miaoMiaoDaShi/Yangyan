@@ -65,25 +65,24 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
     private void initData() {
         mImageInfos = getList();
         mImageAdapter = (ImageAdapter) getAdapetr();
-        你的吗
     }
 
     @Override
     protected RecyclerView getRecylerView() {
-        Log.d(TAG, "getRecylerView: "+rvImages);
+        Log.d(TAG, "getRecylerView: " + rvImages);
         return rvImages;
     }
 
     @Override
     protected List<ImageInfo> getList() {
-        Log.d(TAG, "getList: "+mImageInfos);
-        return mImageInfos == null ? new ArrayList<ImageInfo>() : mImageInfos;
+        Log.d(TAG, "getList: " + mImageInfos);
+        return mImageInfos = mImageInfos == null ? new ArrayList<ImageInfo>() : mImageInfos;
     }
 
     @Override
     protected RecyclerView.Adapter getAdapetr() {
-        Log.d(TAG, "getAdapetr: "+mImageAdapter);
-        return mImageAdapter == null ? new ImageAdapter(getList(), this, null) : mImageAdapter;
+        Log.d(TAG, "getAdapetr: " + mImageAdapter);
+        return mImageAdapter = mImageAdapter == null ? new ImageAdapter(getList(), this, null) : mImageAdapter;
     }
 
 
@@ -185,7 +184,7 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
 
     @Override
     public void showData(List<ImageInfo> imageInfos) {
-        Log.d(TAG, "showData: imageInfos: size"+imageInfos.size());
+        Log.d(TAG, "showData: imageInfos: size" + imageInfos.size());
         getBaseOnScrollListener().showImageListToView(imageInfos);
 
     }

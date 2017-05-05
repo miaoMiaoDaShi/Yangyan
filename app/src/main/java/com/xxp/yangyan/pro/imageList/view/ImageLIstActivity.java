@@ -95,12 +95,12 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
 
     @Override
     protected List<ImageInfo> getList() {
-        return mImageInfos == null ? new ArrayList<ImageInfo>() : mImageInfos;
+        return mImageInfos = mImageInfos == null ? new ArrayList<ImageInfo>() : mImageInfos;
     }
 
     @Override
     protected RecyclerView.Adapter getAdapetr() {
-        return mImageAdapter == null ? new ImageAdapter(getList(), null, this) : mImageAdapter;
+        return mImageAdapter = mImageAdapter == null ? new ImageAdapter(getList(), null, this) : mImageAdapter;
     }
 
 

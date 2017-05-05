@@ -94,12 +94,12 @@ public class ClassifyFragment extends BaseRecyclerViewFragment<Presenter, Classi
 
     @Override
     protected List<ClassifyInfo> getList() {
-        return mClassifyInfo == null ? new ArrayList<ClassifyInfo>() : mClassifyInfo;
+        return mClassifyInfo = mClassifyInfo == null ? new ArrayList<ClassifyInfo>() : mClassifyInfo;
     }
 
     @Override
     protected RecyclerView.Adapter getAdapetr() {
-        return mClassifyAdapter == null ? new ClassifyAdapter(getContext(), getList(), this) : mClassifyAdapter;
+        return mClassifyAdapter = mClassifyAdapter == null ? new ClassifyAdapter(getContext(), getList(), this) : mClassifyAdapter;
     }
 
     //加载布局文件
