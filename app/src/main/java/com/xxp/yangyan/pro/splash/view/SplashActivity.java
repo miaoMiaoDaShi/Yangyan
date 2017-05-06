@@ -60,7 +60,6 @@ public class SplashActivity extends BaseActivity<Presenter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.addActivity(this);
         initView();
         startAnim();
         loadBackground();
@@ -255,6 +254,5 @@ public class SplashActivity extends BaseActivity<Presenter>
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
-        ActivityManager.removeActivity(this);
     }
 }

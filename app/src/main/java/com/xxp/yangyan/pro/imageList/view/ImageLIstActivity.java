@@ -76,7 +76,6 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.addActivity(this);
         initData();
         recylerViewClickListener();
     }
@@ -232,9 +231,5 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
         return new Presenter();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ActivityManager.removeActivity(this);
-    }
+
 }

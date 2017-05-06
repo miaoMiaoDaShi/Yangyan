@@ -70,7 +70,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.addActivity(this);
         initView();
         initBmob();
         if (App.isFirst) {
@@ -250,9 +249,4 @@ public class MainActivity extends BaseActivity implements
         return null;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ActivityManager.removeActivity(this);
-    }
 }

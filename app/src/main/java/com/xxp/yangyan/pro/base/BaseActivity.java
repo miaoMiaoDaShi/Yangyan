@@ -37,6 +37,7 @@ public abstract class BaseActivity<P extends MvpBasePresenter> extends MvpActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityManager.addActivity(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         if(Build.VERSION.SDK_INT>=21){
             getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -105,4 +106,9 @@ public abstract class BaseActivity<P extends MvpBasePresenter> extends MvpActivi
      * @return 返回视图的布局id
      */
     protected abstract int getLayoutId();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityManager.removeActivity(this);
+    }
 }

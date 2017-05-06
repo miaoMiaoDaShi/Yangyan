@@ -107,7 +107,6 @@ public class GalleryActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityManager.addActivity(this);
         initView();
         initData();
         //对viewPager的数据的加载
@@ -381,11 +380,7 @@ public class GalleryActivity extends BaseActivity
         return null;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ActivityManager.removeActivity(this);
-    }
+
 
 
 }
