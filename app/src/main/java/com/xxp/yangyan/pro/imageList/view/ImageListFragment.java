@@ -83,10 +83,6 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
         return mImageAdapter = mImageAdapter == null ? new ImageAdapter(getList(), this, null) : mImageAdapter;
     }
 
-    @Override
-    protected RecyclerView.LayoutManager getLayoutManager() {
-        return new GridLayoutManager(getActivity(),1);
-    }
 
     private void recylerViewClickListener() {
         mImageAdapter.setOnItemClick(new ImageAdapter.OnItemClick() {

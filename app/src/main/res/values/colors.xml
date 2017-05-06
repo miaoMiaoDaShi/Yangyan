@@ -12,10 +12,13 @@
     <color name="primary">#69F0AE</color>
     <color name="accent">@color/primary</color>
 
-
+    <color name="pinkA">#ff9999</color>
+    <color name="blueA">#82c2c9</color>
     <color name="blue">#67C0E5</color>
+    <color name="greenA">#bdd6a2</color>
+    <color name="violet">#c79ecf</color>
     <color name="green">#9AD262</color>
-    <color name="pink">#EA9EA0</color>
+    <color name="pinkB">#EA9EA0</color>
     <color name="blue_and_green">#75C0AC</color>
 
     <!-- 87% -->

@@ -39,7 +39,11 @@ public class ClassifyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             R.color.blue_and_green,
             R.color.blue,
             R.color.green,
-            R.color.pink};
+            R.color.blueA,
+            R.color.greenA,
+            R.color.pinkA,
+            R.color.pinkB,
+            R.color.violet};
 
     private final String TAG = "ClassifyAdapter";
 
@@ -52,7 +56,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.item_category,parent,false);
+        View view = mLayoutInflater.inflate(R.layout.item_category, parent, false);
         return new MyHolder(view);
     }
 
@@ -61,8 +65,8 @@ public class ClassifyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         MyHolder holder = (MyHolder) viewHolder;
 
         //将4种基本的颜色,随机添加到集合中
-        if(sparseArray.size()<=position){
-            sparseArray.put(position,UIUtils.getColor(itemColor[(int) (Math.random() * 4)]));
+        if (sparseArray.size() <= position) {
+            sparseArray.put(position, UIUtils.getColor(itemColor[(int) (Math.random() * itemColor.length)]));
         }
 
         //为标签设置颜色
