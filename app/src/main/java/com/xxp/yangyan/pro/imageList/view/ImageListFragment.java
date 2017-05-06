@@ -70,19 +70,16 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
 
     @Override
     protected RecyclerView getRecylerView() {
-        Log.d(TAG, "getRecylerView: " + rvImages);
         return rvImages;
     }
 
     @Override
     protected List<ImageInfo> getList() {
-        Log.d(TAG, "getList: " + mImageInfos);
         return mImageInfos = mImageInfos == null ? new ArrayList<ImageInfo>() : mImageInfos;
     }
 
     @Override
     protected RecyclerView.Adapter getAdapetr() {
-        Log.d(TAG, "getAdapetr: " + mImageAdapter);
         return mImageAdapter = mImageAdapter == null ? new ImageAdapter(getList(), this, null) : mImageAdapter;
     }
 
