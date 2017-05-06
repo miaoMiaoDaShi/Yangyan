@@ -139,7 +139,6 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
 
     @Override
     protected void loadData() {
-        Log.d(TAG, "loadData: ");
         presenter.loadData(Model.TYPE_NEW, getBaseOnScrollListener().getCurrentPage());
     }
 
