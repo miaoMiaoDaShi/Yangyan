@@ -116,7 +116,6 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
             }
         };
 
-        Log.d(TAG, "loadData: ");
         Subscription subscription = getModel()
                 .getData(type, page)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.TextView;
 
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
@@ -28,6 +27,7 @@ import com.xxp.yangyan.pro.utils.JudgeUtils;
 import com.xxp.yangyan.pro.utils.SettingUtils;
 import com.xxp.yangyan.pro.utils.ToastUtils;
 import com.xxp.yangyan.pro.utils.UIUtils;
+import com.xxp.yangyan.pro.view.CircleProgressbar;
 
 import java.util.List;
 import java.util.Timer;
@@ -41,8 +41,8 @@ public class SplashActivity extends BaseActivity<Presenter>
         implements Animation.AnimationListener, MvpLceView<SplashInfo> {
 
     //倒计时
-    @BindView(R.id.tv_time)
-    TextView tv_time;
+    @BindView(R.id.cpbSplash)
+    CircleProgressbar cpbSplash;
     @BindView(R.id.activity_splash)
     View splashView;
     private Timer timer;
@@ -50,6 +50,8 @@ public class SplashActivity extends BaseActivity<Presenter>
     private String splashImgPath;
     //设置壁纸
     private boolean isFristOnClick = true;
+
+    private int mTime = 180;
 
     private long exitTime;
     //启动图片的存储名字
@@ -80,18 +82,26 @@ public class SplashActivity extends BaseActivity<Presenter>
     /**
      * 设置为壁纸
      */
-    @OnClick(R.id.activity_splash)
-    void setWallPaper() {
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
-            exitTime = System.currentTimeMillis();
-        } else {
-            if (isFristOnClick) {
-                isFristOnClick = false;
-                //设置壁纸
-                SettingUtils.setWallpaper(UIUtils.DrawableToBitmap(splashView.getBackground()));
+    @OnClick({R.id.activity_splash, R.id.cpbSplash})
+    void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.activity_splash:
+                if ((System.currentTimeMillis() - exitTime) > 2000) {
+                    exitTime = System.currentTimeMillis();
+                } else {
+                    if (isFristOnClick) {
+                        isFristOnClick = false;
+                        //设置壁纸
+                        SettingUtils.setWallpaper(UIUtils.DrawableToBitmap(splashView.getBackground()));
 
-            }
+                    }
+                }
+                break;
+            case R.id.cpbSplash:
+                goMain();
+                break;
         }
+
 
     }
 
@@ -120,23 +130,23 @@ public class SplashActivity extends BaseActivity<Presenter>
 
     //倒计时时间开始
     private void startTimer() {
+        cpbSplash.setMaxProgress(mTime);
         timer = new Timer();
         timer.schedule(new TimerTask() {
-            private int time = 9;
 
             @Override
             public void run() {
                 UIUtils.onUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_time.setText(time-- + "");
-                        if (time == -1) {
+                        cpbSplash.setProgress(mTime--);
+                        if (mTime == -1) {
                             goMain();
                         }
                     }
                 });
             }
-        }, 0, 1000);
+        }, 0, 50);
     }
 
     @Override

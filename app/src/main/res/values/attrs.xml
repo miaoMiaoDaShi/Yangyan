@@ -9,16 +9,36 @@
 
     <declare-styleable name="BannerView">
         <!--图片的数量-->
-        <attr name="banner_count" format="integer"/>
+        <attr name="banner_count" format="integer" />
         <!--指示器 颜色  当前-->
-        <attr name="point_full_color" format="color"/>
+        <attr name="point_full_color" format="color" />
         <!--指示器 颜色  为空-->
-        <attr name="point_empty_color" format="color"/>
+        <attr name="point_empty_color" format="color" />
         <!--  切换时间-->
-        <attr name="auto_scroll_time" format="integer"/>
+        <attr name="auto_scroll_time" format="integer" />
         <!--  加载时.看到的图片-->
-        <attr name="loading_image" format="integer"/>
+        <attr name="loading_image" format="integer" />
         <!--滑动速度,时间-->
-        <attr name="scroll_speed" format="integer"/>
+        <attr name="scroll_speed" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleProgressbar">
+        <!--完成的颜色-->
+        <attr name="color_done" format="color" />
+        <!--未完成的颜色-->
+        <attr name="color_undone" format="color" />
+        <!--是否以环形显示-->
+        <attr name="show_style">
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+        </attr>
+        <!--是否显示百分百进度文字-->
+        <attr name="show_text" format="boolean" />
+        <!--文字的颜色-->
+        <attr name="text_color" format="color" />
+        <!--进度最大值-->
+        <attr name="max_progress" format="integer" />
+        <!--圆环的宽度-->
+        <attr name="ring_width" format="integer" />
     </declare-styleable>
 </resources>
