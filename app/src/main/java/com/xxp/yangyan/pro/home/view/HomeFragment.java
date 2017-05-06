@@ -50,12 +50,24 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
     //轮播图
     @BindView(R.id.vp_banner)
     BannerView bannerView;
+
+    //推荐
     @BindView(R.id.iv_push_1)
     ImageView ivPush1;
     @BindView(R.id.iv_push_2)
     ImageView ivPush2;
     @BindView(R.id.iv_push_3)
     ImageView ivPush3;
+
+    //动漫专栏
+    @BindView(R.id.iv_anime_1)
+    ImageView ivAnime1;
+    @BindView(R.id.iv_anime_2)
+    ImageView ivAnime2;
+    @BindView(R.id.iv_anime_3)
+    ImageView ivAnime3;
+    @BindView(R.id.iv_anime_4)
+    ImageView ivAnime4;
 
     //公告
     @BindView(R.id.tv_notice)
@@ -174,6 +186,23 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
         }
     }
 
+    public void setAnimeImage(List<String> urls) {
+        //设置推荐专栏的图片
+        List<ImageView> animes = new ArrayList<>();
+        animes.add(ivAnime1);
+        animes.add(ivAnime2);
+        animes.add(ivAnime3);
+        animes.add(ivAnime4);
+
+        for (int i = 0; i < animes.size(); i++) {
+            Log.i(TAG, "setAnimeImage: " + urls.get(i));
+            GlideUtils.loadImageView(this,
+                    MyApi.MY_BASE_URL
+                            + urls.get(i),
+                    animes.get(i));
+        }
+    }
+
 
     @Override
     public void showLoading(boolean type) {
@@ -209,6 +238,7 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
             setbannerImage(data.getBanner());
             setNotice(data.getNotice());
             setPlateImage(data.getPush());
+            setAnimeImage(data.getDongman());
         }
     }
 
