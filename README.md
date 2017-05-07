@@ -5,9 +5,9 @@
 1. ### [http://m.xxxiao.com/](http://m.xxxiao.com/ "http://m.xxxiao.com/") 
 - ### 软件启动图,背景图片可随后台控制
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/splash.jpg)
-- ### 部分截图展示
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/home.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/imageList.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/classify.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/userCenter.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/gallery.jpg)
+- ###最近有点忙,动漫不打算做了.
