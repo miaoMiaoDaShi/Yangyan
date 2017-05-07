@@ -1,7 +1,5 @@
 package com.xxp.yangyan.pro.imageList.model;
 
-import android.util.Log;
-
 import com.xxp.yangyan.mvp.model.MvpModel;
 import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.api.ApiEngine;
@@ -28,7 +26,7 @@ public class Model implements MvpModel {
     public static final String TYPE_COLLECT = "type_collect";
     //详细的写真集合
     public static final String TYPE_PARTICULARS = "type_particulars";
-    
+
 
     //收藏,,数据库加载只加载一次,避免重复
     private Boolean isFirstLoad = true;
@@ -43,16 +41,13 @@ public class Model implements MvpModel {
                 return Observable.create(new Observable.OnSubscribe<List<ImageInfo>>() {
                     @Override
                     public void call(Subscriber<? super List<ImageInfo>> subscriber) {
-                        if(isFirstLoad){
-                            subscriber.onStart();
-                            subscriber.onNext(App.getDaoSession().getImageInfoDao().loadAll());
-                            isFirstLoad = false;
+                        List<ImageInfo> imageinfos = App.getDaoSession().getImageInfoDao().loadAll();
+                        if (imageinfos != null) {
+                            subscriber.onNext(imageinfos);
+                            subscriber.onCompleted();
                         } else {
-                            //异常信息404防止重复加载
-                            subscriber.onError(new Throwable("404"));
+                            subscriber.onError(new Throwable("数据库加载出错"));
                         }
-
-
                     }
                 });
             default:

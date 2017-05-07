@@ -74,8 +74,8 @@ public abstract class BaseRefreshLayoutFragment<P extends MvpBasePresenter> exte
                 .show();
     }
 
-    //数据为空
-    protected void loadIsEmpty() {
+    //没有更多的数据了
+    protected void notMoreData() {
         mSwipeRefreshLayout.setRefreshing(false);
         Alerter
                 .create(getActivity())

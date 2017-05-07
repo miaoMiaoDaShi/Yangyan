@@ -5,7 +5,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,15 +32,19 @@ import com.xxp.yangyan.pro.adapter.GalleryAdapter;
 import com.xxp.yangyan.pro.base.BaseActivity;
 import com.xxp.yangyan.pro.entity.ImageInfo;
 import com.xxp.yangyan.pro.entity.ImageInfoDao;
+import com.xxp.yangyan.pro.imageList.model.Model;
+import com.xxp.yangyan.pro.imageList.view.ImageLIstActivity;
 import com.xxp.yangyan.pro.listener.RequestPermisListener;
 import com.xxp.yangyan.pro.utils.ActivityManager;
 import com.xxp.yangyan.pro.utils.IOUtils;
+import com.xxp.yangyan.pro.utils.JudgeUtils;
 import com.xxp.yangyan.pro.utils.SettingUtils;
 import com.xxp.yangyan.pro.utils.ToastUtils;
 import com.xxp.yangyan.pro.view.ViewPager;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,6 +110,10 @@ public class GalleryActivity extends BaseActivity
     private PhotoViewAttacher photoViewAttacher;
     private boolean isCollect;
 
+    //打开此界面的操作来源(收藏界面,从网络加载套图)
+    private String mType;
+    private GalleryAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +132,7 @@ public class GalleryActivity extends BaseActivity
         images = (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGES) == null ?
                 new ArrayList<ImageInfo>() :
                 (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGES);
+        mType = getIntent().getStringExtra(ImageLIstActivity.KEY_TYPE);
         //获得前面点击的索引值
         mCurrentPosi = getIntent().getIntExtra(KEY_POSITION, 0);
         views = new ArrayList<>();
@@ -268,6 +279,13 @@ public class GalleryActivity extends BaseActivity
                     imageView.setImageDrawable(resource);
                     photoViewAttacher = new PhotoViewAttacher(imageView);
 
+                    photoViewAttacher.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            collect();
+                            return true;
+                        }
+                    });
                     photoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                         @Override
                         public void onViewTap(View view, float x, float y) {
@@ -282,13 +300,24 @@ public class GalleryActivity extends BaseActivity
             });
             views.add(imageView);
         }
-        vpGallery.setAdapter(new GalleryAdapter(views));
+        mAdapter = new GalleryAdapter(views);
+        vpGallery.setAdapter(mAdapter);
         vpGallery.addOnPageChangeListener(this);
 
         vpGallery.setCurrentItem(mCurrentPosi);
         tvGalleryCount.setText(mCurrentPosi + 1 + "/" + views.size());
     }
 
+    //触发收藏逻辑
+    private void collect() {
+        images.get(mCurrentPosi).setTitle(JudgeUtils.getDateString());
+        if (!isCollect) {
+            doCollect();
+        } else {
+            notCollect();
+        }
+        initCollect();
+    }
 
     //返回按钮
     @OnClick({R.id.iv_back, R.id.ll_collect, R.id.ll_setwallpaper, R.id.ll_download})
@@ -298,12 +327,7 @@ public class GalleryActivity extends BaseActivity
                 finish();
                 break;
             case R.id.ll_collect:
-                if (!isCollect) {
-                    doCollect();
-                } else {
-                    notCollect();
-                }
-                initCollect();
+                collect();
 
                 break;
             case R.id.ll_download:
@@ -350,7 +374,19 @@ public class GalleryActivity extends BaseActivity
     }
 
     private void notCollect() {
-        App.getDaoSession().getImageInfoDao().delete(images.get(mCurrentPosi));
+        if (!TextUtils.isEmpty(mType) && TextUtils.equals(Model.TYPE_COLLECT, mType)) {
+            views.remove(mCurrentPosi);
+            App.getDaoSession().getImageInfoDao().delete(images.get(mCurrentPosi));
+            if (views.isEmpty()) {
+                Intent intent = new Intent();
+                intent.putExtra(KEY_IMAGES, (Serializable) views);
+                setResult(RESULT_OK,intent);
+                finish();
+                return;
+            }
+            mAdapter.notifyDataSetChanged();
+            tvGalleryCount.setText(mCurrentPosi + 1 + "/" + views.size());
+        }
     }
 
     //收藏当前的图片
@@ -379,8 +415,6 @@ public class GalleryActivity extends BaseActivity
     protected MvpBasePresenter bindPresenter() {
         return null;
     }
-
-
 
 
 }

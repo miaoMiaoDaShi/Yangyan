@@ -244,7 +244,6 @@ public class SplashActivity extends BaseActivity<Presenter>
         } else setDownloadImage();
     }
 
-
     @Override
     protected Presenter bindPresenter() {
         return new Presenter();

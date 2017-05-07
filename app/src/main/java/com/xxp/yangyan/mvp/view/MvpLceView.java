@@ -33,4 +33,5 @@ public interface MvpLceView<M> extends MvpView {
      * @param data
      */
     void showData(M data);
+
 }

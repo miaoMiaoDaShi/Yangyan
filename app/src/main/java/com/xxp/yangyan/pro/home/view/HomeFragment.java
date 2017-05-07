@@ -242,6 +242,7 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
         }
     }
 
+
     @Override
     protected SwipeRefreshLayout getRefreshLayout() {
         return mSwipeRefreshLayout;

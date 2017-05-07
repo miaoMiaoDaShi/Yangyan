@@ -34,6 +34,16 @@ public class JudgeUtils {
         return year + month + day;
     }
 
+    public static String getDateString() {
+        Calendar calendar = Calendar.getInstance();
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        String month = String.valueOf((calendar.get(Calendar.MONTH) + 1) < 10 ? "0" + (calendar.get(Calendar.MONTH) + 1) : (calendar.get(Calendar.MONTH) + 1));
+        String day = String.valueOf((calendar.get(Calendar.DAY_OF_MONTH) + 1) < 10 ? "0" + (calendar.get(Calendar.DAY_OF_MONTH) + 1) : (calendar.get(Calendar.DAY_OF_MONTH) + 1));
+
+
+        return year + "年" + month + "月" + day + "日";
+    }
+
     //判断是SplashImg否有更新
     public static boolean isSplashImgUpdate(String date) {
         String saveDate = getSP().getString("splashImg", "");

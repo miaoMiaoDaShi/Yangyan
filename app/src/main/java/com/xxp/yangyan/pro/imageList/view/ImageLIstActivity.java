@@ -50,6 +50,9 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
     @BindView(R.id.swipe)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    //启动画廊的请求码
+    private final int REQUEST_CODE = 0x11;
+
     private final String mClassifys[] = {"性感美女", "少女萝莉", "美乳香臀", "丝袜美腿", "性感特写", "日韩东亚"
             , "女神合集", "欧美女神"};
     private final String mLinks[] = {"xinggan", "shaonv", "mrxt", "swmt", "xgtx", "rihandongya", "collection",
@@ -124,7 +127,6 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
 
 
     private void initData() {
-        //
         mTypeTitle = new ArrayMap<>();
         for (int i = 0; i < mClassifys.length; i++) {
             mTypeTitle.put(mLinks[i], mClassifys[i]);
@@ -142,6 +144,12 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
         mImageAdapter = (ImageAdapter) getAdapetr();
     }
 
+
+    @Override
+    public void dataIsEnd() {
+        //设置自己的那个RecyclerView滚动监听辅助类,数据到底了,不能再滚动加载更多了
+        getBaseOnScrollListener().setEnd(true);
+    }
 
     @Override
     public SwipeRefreshLayout getRefreshLayout() {
@@ -186,7 +194,8 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
         Intent intent = new Intent(UIUtils.getContext(), GalleryActivity.class);
         intent.putExtra(GalleryActivity.KEY_IMAGES, (Serializable) images);
         intent.putExtra(GalleryActivity.KEY_POSITION, mPosition);
-        startActivity(intent);
+        intent.putExtra(KEY_TYPE, mType);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
@@ -207,16 +216,7 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
      */
     @Override
     public void showError(Throwable throwable) {
-        Log.e(TAG, "showError: ", throwable);
-        //异常信息中含有404,说明数据到底了
-        if (throwable.toString().contains("404")) {
-            loadIsEmpty();
-            //设置自己的那个RecyclerView滚动监听辅助类,数据到底了,不能再滚动加载更多了
-            getBaseOnScrollListener().setEnd(true);
-        } else {
-            //其他的异常,当然也就是加载错误罗
-            loadError();
-        }
+        loadError();
 
     }
 
@@ -231,5 +231,20 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
         return new Presenter();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (TextUtils.equals(Model.TYPE_COLLECT, mType)) {
+                    Log.e(TAG, "onActivityResult: ");
+                    mImageInfos.clear();
+                    getAdapetr().notifyDataSetChanged();
+                    refreshData();
+//                    mImageInfos.addAll((List<ImageInfo>) data.getSerializableExtra(GalleryActivity.KEY_IMAGES));
+//                    getAdapetr().notifyDataSetChanged();
+                }
+                break;
+        }
+    }
 }

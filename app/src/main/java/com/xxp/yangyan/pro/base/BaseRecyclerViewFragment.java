@@ -65,6 +65,15 @@ public abstract class BaseRecyclerViewFragment<P extends MvpBasePresenter, T> ex
                 return BaseRecyclerViewFragment.this.getAdapetr();
             }
 
+            @Override
+            protected void onNotMoreData() {
+                notMoreData();
+            }
+
+            @Override
+            protected void isEmpty() {
+                notMoreData();
+            }
 
             @Override
             protected void loadData() {

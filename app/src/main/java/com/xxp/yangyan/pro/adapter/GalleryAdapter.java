@@ -1,6 +1,7 @@
 package com.xxp.yangyan.pro.adapter;
 
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,7 +40,13 @@ public class GalleryAdapter extends PagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(views.get(position));
+        container.removeView((View) object);
+        //container.removeView(views.get(position));
     }
 }

@@ -2,6 +2,7 @@ package com.xxp.yangyan.pro.imageList.view;
 
 import com.xxp.yangyan.mvp.view.MvpLceView;
 import com.xxp.yangyan.mvp.view.MvpView;
+import com.xxp.yangyan.mvp.view.impl.MvpLceListView;
 
 import okhttp3.ResponseBody;
 
@@ -12,9 +13,10 @@ import okhttp3.ResponseBody;
  * Description :
  */
 
-public interface ImageListView<M> extends MvpLceView<M> {
+public interface ImageListView<M> extends MvpLceListView<M> {
 
     void loadGalleryError(Throwable throwable);
 
     void loadGallerySuccess(M data);
+
 }

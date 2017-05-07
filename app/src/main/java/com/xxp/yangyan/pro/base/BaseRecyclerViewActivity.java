@@ -1,11 +1,9 @@
 package com.xxp.yangyan.pro.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 
 import com.xxp.yangyan.mvp.presenter.impl.MvpBasePresenter;
 import com.xxp.yangyan.pro.listener.BaseOnScrollListener;
@@ -62,6 +60,16 @@ public abstract class BaseRecyclerViewActivity<P extends MvpBasePresenter, T> ex
                 return BaseRecyclerViewActivity.this.getAdapetr();
             }
 
+            @Override
+            protected void onNotMoreData() {
+                notMoreData();
+            }
+
+
+            @Override
+            protected void isEmpty() {
+                notMoreData();
+            }
 
             @Override
             protected void loadData() {

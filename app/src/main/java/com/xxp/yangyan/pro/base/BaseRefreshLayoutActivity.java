@@ -1,7 +1,6 @@
 package com.xxp.yangyan.pro.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
@@ -27,7 +26,7 @@ public abstract class BaseRefreshLayoutActivity<P extends MvpBasePresenter> exte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSwipeRefreshLayout();
-        loadData();
+        refreshData();
     }
 
     //返回谷歌刷新控件
@@ -66,14 +65,14 @@ public abstract class BaseRefreshLayoutActivity<P extends MvpBasePresenter> exte
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        loadData();
+                        refreshData();
                     }
                 })
                 .show();
     }
 
-    //数据为空
-    protected void loadIsEmpty() {
+    //没有更多的数据了
+    protected void notMoreData() {
         mSwipeRefreshLayout.setRefreshing(false);
         Alerter
                 .create(this)
@@ -83,7 +82,7 @@ public abstract class BaseRefreshLayoutActivity<P extends MvpBasePresenter> exte
                 .show();
     }
 
-    private void loadData() {
+    protected void refreshData() {
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {

@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.mvp.view.MvpLceView;
+import com.xxp.yangyan.mvp.view.impl.MvpLceListView;
 import com.xxp.yangyan.pro.App;
 import com.xxp.yangyan.pro.adapter.ClassifyAdapter;
 import com.xxp.yangyan.pro.base.BaseRecyclerViewFragment;
@@ -40,7 +41,7 @@ import butterknife.BindView;
  * 女神合集
  */
 
-public class ClassifyFragment extends BaseRecyclerViewFragment<Presenter, ClassifyInfo> implements MvpLceView<ClassifyInfoData> {
+public class ClassifyFragment extends BaseRecyclerViewFragment<Presenter, ClassifyInfo> implements MvpLceListView<ClassifyInfoData> {
 
 
     private final String TAG = "ClassifyFragment";
@@ -137,6 +138,11 @@ public class ClassifyFragment extends BaseRecyclerViewFragment<Presenter, Classi
     @Override
     public void showData(ClassifyInfoData data) {
         getBaseOnScrollListener().showImageListToView(data.getResult());
+    }
+
+    @Override
+    public void dataIsEnd() {
+        getBaseOnScrollListener().setEnd(true);
     }
 
 

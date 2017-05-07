@@ -43,9 +43,14 @@ public class Presenter extends BasePresenter<Model, ClassifyFragment> {
                     }
 
                     @Override
-                    public void onNext(ClassifyInfoData categoryInfos) {
-
-                        getView().showData(categoryInfos);
+                    public void onNext(ClassifyInfoData classifyInfos) {
+                        getView().showData(classifyInfos);
+                        /**
+                         * 分类数据来源于自己的服务器有且只有只有一页
+                         * 故.显示数据后应通知view没有更多数据了
+                         * 防止用户不停地上拉加载重复的数据
+                         */
+                        getView().dataIsEnd();
                     }
                 });
         addSubscribe(subscription);

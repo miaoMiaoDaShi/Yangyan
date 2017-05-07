@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -167,16 +166,7 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
 
     @Override
     public void showError(Throwable throwable) {
-        Log.e(TAG, "showError: ", throwable);
-        //异常信息中含有404,说明数据到底了
-        if (throwable.toString().contains("404")) {
-            loadIsEmpty();
-            //设置自己的那个RecyclerView滚动监听辅助类,数据到底了,不能再滚动加载更多了
-            getBaseOnScrollListener().setEnd(true);
-        } else {
-            //其他的异常,当然也就是加载错误罗
-            loadError();
-        }
+        loadData();
     }
 
     @Override
@@ -186,7 +176,10 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
 
     }
 
-
+    @Override
+    public void dataIsEnd() {
+        getBaseOnScrollListener().setEnd(true);
+    }
     @Override
     public void loadGalleryError(Throwable throwable) {
         mDialog.setMessage("阿欧!加载失败");

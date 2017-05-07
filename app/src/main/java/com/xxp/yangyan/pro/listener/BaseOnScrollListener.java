@@ -3,6 +3,8 @@ package com.xxp.yangyan.pro.listener;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.List;
 
@@ -15,27 +17,36 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
  * Description : 自己的RecyclerView的辅助类
  */
 
-public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListener {
+public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListener implements View.OnTouchListener {
     //是否加载中.
-    private boolean loading = false;
+    private boolean mLoading = false;
 
     //当前加载的是第几页
-    private int currentPage;
+    private int mCurrentPage;
     //默认的第一页,页码
     private final int DEFAULT_PAGE = 1;
 
     //数据到是否底了...
-    private boolean end = false;
-    private List<T> lists;
+    private boolean mEnd = false;
+    private List<T> mList;
 
     private final String TAG = "BaseOnScrollListener";
 
     private RecyclerView recyclerView;
 
+    /*
+    为了防止数据量少,下拉刷新加载数据的时候触发上拉加载,故设置此token作为标记
+     */
+    private int mToken;
+    private final int TOKEN_PULL_DOWN = 0x11;
+    private final int TOKEN_PULL_UP = 0x12;
 
+    public void setList(List<T> list){
+        mList = list;
+    }
     //该函数的构造函数
     public BaseOnScrollListener() {
-        lists = getList();
+        mList = getList();
         initRecyclerView();
     }
 
@@ -47,14 +58,15 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
         recyclerView.setLayoutManager(getLayoutManager());
         recyclerView.setAdapter(new ScaleInAnimationAdapter(getAdapter()));
         recyclerView.addOnScrollListener(this);
+        recyclerView.setOnTouchListener(this);
     }
 
     protected abstract RecyclerView getRecylerView();
 
     //重置状态
     public void reset() {
-        loading = false;
-        currentPage = DEFAULT_PAGE;
+        mLoading = false;
+        mCurrentPage = DEFAULT_PAGE;
     }
 
     //获取布局管理
@@ -76,51 +88,77 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
 
 
     @Override
+    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        //正在被用户拖动
+        if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+            mToken = TOKEN_PULL_UP;
+        }
+    }
+
+    @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
         //当前状态并不是正在加载,且RecylerView满足加载的条件
-        if (!isLoading() && canLoadMore(recyclerView) && !end) {
+        if (!isLoading() && canLoadMore(recyclerView) && !mEnd && mToken == TOKEN_PULL_UP) {
             onLoadMore();
-            Log.i("下拉加载", "onScrolled: ");
+            //没有更多的数据了
+        } else if (!isLoading() && canLoadMore(recyclerView) && mEnd && mToken == TOKEN_PULL_UP) {
+            onNotMoreData();
         }
 
     }
+
+    protected abstract void onNotMoreData();
 
 
     //执行刷新
     public void refresh() {
         reset();
-        loading = true;
+        mToken = TOKEN_PULL_DOWN;
+        mLoading = true;
         loadData();
     }
 
     //将图片显示在RecylerView上
     public void showImageListToView(List<T> lists) {
-        Log.d(TAG, "showImageListToView: ");
+        Log.e(TAG, "showImageListToView: 1"+ mList.size() );
         if (null != lists) {
-            int listCount = lists.size();
-            if (currentPage == DEFAULT_PAGE) {
-                this.lists.clear();
-                this.lists.addAll(lists);
+            if (lists.isEmpty() && mCurrentPage == DEFAULT_PAGE) {
+                isEmpty();
+                mList.clear();
+                getAdapter().notifyDataSetChanged();
             } else {
-                this.lists.addAll(lists);
+                if (mCurrentPage == DEFAULT_PAGE) {
+                    Log.e(TAG, "showImageListToView: 2" );
+                    this.mList.clear();
+                    Log.e(TAG, "showImageListToView: 3" );
+                    this.mList.addAll(lists);
+                    Log.e(TAG, "showImageListToView: 4" );
+                } else {
+                    this.mList.addAll(lists);
+                }
             }
-            int pos = lists.size();
+            Log.e(TAG, "showImageListToView: 5" );
+            int pos = mList.size();
             if (pos > 0) {
                 pos--;
-                Log.d(TAG, "showImageListToView: adapter" + getAdapter());
-                getAdapter().notifyItemChanged(pos, listCount);
+                Log.e(TAG, "showImageListToView: 6" );
+                getAdapter().notifyItemChanged(pos, 1);
+                Log.e(TAG, "showImageListToView: 7" );
                 setLoadStatus(false);
             }
         }
     }
+
+    protected abstract void isEmpty();
 
 
     /**
      * 加载更多数据
      */
     public void onLoadMore() {
-        currentPage++;
+        mCurrentPage++;
         getRefreshLayout().post(new Runnable() {
             @Override
             public void run() {
@@ -133,7 +171,7 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
     }
 
     private void setLoadStatus(boolean b) {
-        loading = b;
+        mLoading = b;
         getRefreshLayout().setRefreshing(b);
     }
 
@@ -142,27 +180,35 @@ public abstract class BaseOnScrollListener<T> extends RecyclerView.OnScrollListe
 
     //判断数据是否到底了
     public boolean isEnd() {
-        return end;
+        return mEnd;
     }
 
     //判断是否正在加载
     public boolean isLoading() {
-        return loading;
+        return mLoading;
     }
 
     public void setLoading(boolean loading) {
-        this.loading = loading;
+        this.mLoading = loading;
     }
 
     public void setEnd(boolean end) {
-        this.end = end;
+        this.mEnd = end;
     }
 
     public int getCurrentPage() {
-        return currentPage;
+        return mCurrentPage;
     }
 
     public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
+        this.mCurrentPage = currentPage;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (mLoading) {
+            return true;
+        }
+        return false;
     }
 }

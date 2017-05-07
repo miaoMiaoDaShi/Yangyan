@@ -1,6 +1,5 @@
 package com.xxp.yangyan.pro.imageList.presenter;
 
-import android.app.ProgressDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -51,17 +50,38 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
                     public void onCompleted() {
                         //提示view加载完成
                         getView().showContent();
+                        getView().dataIsEnd();
                     }
 
+                    /**
+                     * 网络上的异常.....数据到底了
+                     * @param throwable
+                     */
                     @Override
                     public void onError(Throwable throwable) {
                         Log.e(TAG, "onError: " + throwable);
-                        //图片加载失败
-                        if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
-                            getView().loadGalleryError(throwable);
+                        String throwMag = throwable.getMessage();
+                        //没有更多数据异常
+                        if (throwMag.contains("404")) {
+                            getView().dataIsEnd();
                         } else {
                             getView().showError(throwable);
                         }
+
+//                        //加载套图
+//                        if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
+//                            getView().loadGalleryError(throwable);
+//                        } else {
+//                            if (TextUtils.equals(Model.TYPE_COLLECT, type) &&
+//                                    TextUtils.equals(
+//                                            ConstantLoadData.NOT_HAVE_MORE_DATA,
+//                                            throwable.getMessage())) {
+//
+//                            } else {
+//
+//                            }
+//
+//                        }
                     }
 
                     @Override
@@ -75,46 +95,56 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
                             getView().showData(imageInfos);
                         }
                     }
-                } : new Observer<ResponseBody>() {
-            @Override
-            public void onCompleted() {
-                //提示view加载完成
-                getView().showContent();
-            }
+                } :
+                new Observer<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        //提示view加载完成
+                        getView().showContent();
 
-            @Override
-            public void onError(Throwable throwable) {
-                Log.e(TAG, "onError: " + throwable);
-                //图片加载失败
-                if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
-                    getView().loadGalleryError(throwable);
-                } else {
-                    getView().showError(throwable);
-                }
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                Log.i(TAG, "onNext: ResponseBody :"+responseBody.toString());
-                if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
-                    //显示图片集
-                    try {
-                        getView().loadGallerySuccess((AnalysisHTML.ParticularsToList(responseBody.string(),
-                                String.valueOf(page))));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    //显示加载的结果
-                    try {
-                        getView().showData(AnalysisHTML.HomePageToList(responseBody.string()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
 
-                }
-            }
-        };
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Log.e(TAG, "onError: " + throwable);
+                        String throwMag = throwable.getMessage();
+                        //没有更多数据异常
+                        if (throwMag.contains("404")) {
+                            getView().dataIsEnd();
+                        } else {
+                            //加载套图
+                            if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
+                                getView().loadGalleryError(throwable);
+                            } else {
+                                //套图封面
+                                getView().showError(throwable);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        Log.i(TAG, "onNext: ResponseBody :" + responseBody.toString());
+                        if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
+                            //显示套图
+                            try {
+                                getView().loadGallerySuccess((AnalysisHTML.ParticularsToList(responseBody.string(),
+                                        String.valueOf(page))));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            //显示套图封面
+                            try {
+                                getView().showData(AnalysisHTML.HomePageToList(responseBody.string()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                };
 
         Subscription subscription = getModel()
                 .getData(type, page)
