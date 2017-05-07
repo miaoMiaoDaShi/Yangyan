@@ -8,4 +8,6 @@
 - ### 部分截图展示
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/home.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/imageList.jpg)
+![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/classify.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/userCenter.jpg)
+![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/gallery.jpg)
