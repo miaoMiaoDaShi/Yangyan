@@ -10,4 +10,4 @@
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/classify.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/userCenter.jpg)
 ![](https://github.com/miaoMiaoDaShi/Yangyan/blob/master/screenshot/gallery.jpg)
-- ###最近有点忙,动漫不打算做了.
+- ### 最近有点忙,动漫不打算做了.
