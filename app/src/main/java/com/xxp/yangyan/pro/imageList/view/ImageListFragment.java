@@ -58,7 +58,6 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initData();
-        initFlowLayout();
         recylerViewClickListener();
     }
 
@@ -171,7 +170,6 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
 
     @Override
     public void showData(List<ImageInfo> imageInfos) {
-        Log.d(TAG, "showData: imageInfos: size" + imageInfos.size());
         getBaseOnScrollListener().showImageListToView(imageInfos);
 
     }
@@ -180,16 +178,17 @@ public class ImageListFragment extends BaseRecyclerViewFragment<Presenter, Image
     public void dataIsEnd() {
         getBaseOnScrollListener().setEnd(true);
     }
+
     @Override
     public void loadGalleryError(Throwable throwable) {
         mDialog.setMessage("阿欧!加载失败");
     }
 
     @Override
-    public void loadGallerySuccess(List<ImageInfo> Imageinfos) {
+    public void loadGallerySuccess(List<ImageInfo> imageinfos) {
+        //关闭对话框
         mDialog.dismiss();
-        Intent intent = new Intent(App.getmContext(), GalleryActivity.class);
-        intent.putExtra(GalleryActivity.KEY_IMAGES, (Serializable) Imageinfos);
-        startActivity(intent);
+        //跳转到画廊界面
+        GalleryActivity.startActivity(getActivity(), GalleryActivity.ACTION_PICTURES, imageinfos, 0);
     }
 }

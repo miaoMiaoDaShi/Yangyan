@@ -9,22 +9,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.pro.adapter.ImageAdapter;
 import com.xxp.yangyan.pro.base.BaseRecyclerViewActivity;
-import com.xxp.yangyan.pro.classify.view.ClassifyFragment;
 import com.xxp.yangyan.pro.entity.ImageInfo;
 import com.xxp.yangyan.pro.gallery.view.GalleryActivity;
 import com.xxp.yangyan.pro.imageList.model.Model;
 import com.xxp.yangyan.pro.imageList.presenter.Presenter;
-import com.xxp.yangyan.pro.utils.ActivityManager;
 import com.xxp.yangyan.pro.utils.UIUtils;
 
 import java.io.Serializable;
@@ -191,11 +185,12 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
      * @param images 传入的套图中的每张图片的连接的结合
      */
     private void startToGallery(List<ImageInfo> images) {
-        Intent intent = new Intent(UIUtils.getContext(), GalleryActivity.class);
-        intent.putExtra(GalleryActivity.KEY_IMAGES, (Serializable) images);
-        intent.putExtra(GalleryActivity.KEY_POSITION, mPosition);
-        intent.putExtra(KEY_TYPE, mType);
-        startActivityForResult(intent, REQUEST_CODE);
+        if (TextUtils.equals(Model.TYPE_COLLECT, mType)) {
+            GalleryActivity.startActivityForResult(this, REQUEST_CODE, GalleryActivity.ACTION_COLLECT, images, mPosition);
+        } else {
+            GalleryActivity.startActivity(this, GalleryActivity.ACTION_PICTURES, images, 0);
+        }
+
     }
 
     @Override
@@ -236,15 +231,11 @@ public class ImageLIstActivity extends BaseRecyclerViewActivity<Presenter, Image
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE:
-                if (TextUtils.equals(Model.TYPE_COLLECT, mType)) {
-                    Log.e(TAG, "onActivityResult: ");
-                    mImageInfos.clear();
-                    getAdapetr().notifyDataSetChanged();
-                    refreshData();
-//                    mImageInfos.addAll((List<ImageInfo>) data.getSerializableExtra(GalleryActivity.KEY_IMAGES));
-//                    getAdapetr().notifyDataSetChanged();
-                }
+                mImageInfos.clear();
+                getAdapetr().notifyDataSetChanged();
+                refreshData();
                 break;
         }
     }
+
 }

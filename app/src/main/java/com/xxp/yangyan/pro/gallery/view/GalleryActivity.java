@@ -5,12 +5,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -33,9 +33,7 @@ import com.xxp.yangyan.pro.base.BaseActivity;
 import com.xxp.yangyan.pro.entity.ImageInfo;
 import com.xxp.yangyan.pro.entity.ImageInfoDao;
 import com.xxp.yangyan.pro.imageList.model.Model;
-import com.xxp.yangyan.pro.imageList.view.ImageLIstActivity;
 import com.xxp.yangyan.pro.listener.RequestPermisListener;
-import com.xxp.yangyan.pro.utils.ActivityManager;
 import com.xxp.yangyan.pro.utils.IOUtils;
 import com.xxp.yangyan.pro.utils.JudgeUtils;
 import com.xxp.yangyan.pro.utils.SettingUtils;
@@ -103,16 +101,20 @@ public class GalleryActivity extends BaseActivity
     private boolean isHide = true;
 
     //获取intent传过来的索引值得key
-    public static final String KEY_POSITION = "key_position";
+    public static final String KEY_POSITION = "KEY_POSITION";
     //获取intent传过来的图片信息集合得key
-    public static final String KEY_IMAGES = "key_images";
+    public static final String KEY_IMAGEINFOS = "KEY_IMAGEINFOS";
 
     private PhotoViewAttacher photoViewAttacher;
     private boolean isCollect;
 
     //打开此界面的操作来源(收藏界面,从网络加载套图)
-    private String mType;
+    private String mAction;
     private GalleryAdapter mAdapter;
+
+    //打开此画廊界面有两种情况,一种是网络套图浏览,一种是自己收藏的图片浏览
+    public static final String ACTION_COLLECT = "ACTION_COLLECT";
+    public static final String ACTION_PICTURES = "ACTION_PICTURES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,16 +125,14 @@ public class GalleryActivity extends BaseActivity
         initViewPager();
         hideAnim();
         //是否收藏的界面的初始化
-        initCollect();
+        refreshCollectStatus();
 
     }
 
     private void initData() {
         //获得传过来的图片集合
-        images = (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGES) == null ?
-                new ArrayList<ImageInfo>() :
-                (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGES);
-        mType = getIntent().getStringExtra(ImageLIstActivity.KEY_TYPE);
+        images = (List<ImageInfo>) getIntent().getSerializableExtra(KEY_IMAGEINFOS);
+        mAction = getIntent().getAction();
         //获得前面点击的索引值
         mCurrentPosi = getIntent().getIntExtra(KEY_POSITION, 0);
         views = new ArrayList<>();
@@ -149,12 +149,14 @@ public class GalleryActivity extends BaseActivity
     }
 
 
-    private void initCollect() {
-        List<ImageInfo> imageInfos = new ArrayList<>();
+    private void refreshCollectStatus() {
+        List<ImageInfo> imageInfos;
         ImageInfoDao imageInfoDao = App.getDaoSession().getImageInfoDao();
         QueryBuilder<ImageInfo> infoQueryBuilder = imageInfoDao.queryBuilder();
+        //根据连接从从数据库中查询该图片
         infoQueryBuilder.where(ImageInfoDao.Properties.ImgUrl.eq(images.get(mCurrentPosi).getImgUrl()));
         imageInfos = infoQueryBuilder.list();
+        //如果集合不为空,则代表该图片为收藏状态
         isCollect = !imageInfos.isEmpty();
         if (isCollect) {
             ivImgLove.setImageResource(R.mipmap.ic_loved);
@@ -165,6 +167,8 @@ public class GalleryActivity extends BaseActivity
             ivCollect.setImageResource(R.mipmap.ic_love);
             tvCollect.setText("收藏");
         }
+
+        //中间的桃心动画
         animatePhotoLike(new View[]{ivBgLove, ivImgLove});
     }
 
@@ -282,7 +286,7 @@ public class GalleryActivity extends BaseActivity
                     photoViewAttacher.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            collect();
+                            collectJudge();
                             return true;
                         }
                     });
@@ -308,15 +312,19 @@ public class GalleryActivity extends BaseActivity
         tvGalleryCount.setText(mCurrentPosi + 1 + "/" + views.size());
     }
 
-    //触发收藏逻辑
-    private void collect() {
-        images.get(mCurrentPosi).setTitle(JudgeUtils.getDateString());
+    //移除和添加收藏的逻辑
+    private void collectJudge() {
         if (!isCollect) {
-            doCollect();
+            addToCollect();
         } else {
-            notCollect();
+            removeToCollect();
         }
-        initCollect();
+        // TODO: 2017/5/9  
+        if (views.isEmpty()) {
+            return;
+        }
+        //刷新当前图片的收藏状态
+        refreshCollectStatus();
     }
 
     //返回按钮
@@ -327,8 +335,7 @@ public class GalleryActivity extends BaseActivity
                 finish();
                 break;
             case R.id.ll_collect:
-                collect();
-
+                collectJudge();
                 break;
             case R.id.ll_download:
                 //下载的时候申请权限
@@ -373,24 +380,54 @@ public class GalleryActivity extends BaseActivity
 
     }
 
-    private void notCollect() {
-        if (!TextUtils.isEmpty(mType) && TextUtils.equals(Model.TYPE_COLLECT, mType)) {
+    //移除当前图片
+
+    /**
+     * 取消收藏有两种情况,一种是在浏览套图时,还有一种是浏览收藏的界面时.
+     * 基于第一种情况.我们取消收藏的时候,并不会将其从视图中移除,
+     * 而第二种情况,我们不仅要将其中数据库移除,而且还应该将次视图移除
+     * 基于移除的情况:1.用户取消收藏的是最后一张图片,此时假如集合中的图片一共只有一张,那么当用户将其
+     * 取消收藏时,我们应该直接退出此界面,如图片集合的大小大于1张,那么将当前的索引赋值为取消收藏后
+     * 的图片集合的大小-1;
+     */
+    private void removeToCollect() {
+        Log.e(TAG, "removeToCollect: ");
+        //首先从数据库移除
+        App.getDaoSession().getImageInfoDao().delete(images.get(mCurrentPosi));
+        //打开该视图的意图为收藏图片浏览功能
+        if (TextUtils.equals(ACTION_COLLECT, mAction)) {
+            Log.e(TAG, "removeToCollect: 2");
+            //从视图集合中移除
             views.remove(mCurrentPosi);
-            App.getDaoSession().getImageInfoDao().delete(images.get(mCurrentPosi));
+            //从数据集合里移除
+            images.remove(mCurrentPosi);
+            //如果当前集合为空了,直接退出
             if (views.isEmpty()) {
+                Log.e(TAG, "removeToCollect: views.isEmpty()");
                 Intent intent = new Intent();
-                intent.putExtra(KEY_IMAGES, (Serializable) views);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
                 return;
             }
+            //如果是位于最后一张,且当前的总数大于1
+            if (mCurrentPosi == views.size() && views.size() > 0) {
+                mCurrentPosi = views.size() - 1;
+                Log.e(TAG, "removeToCollect: " + mCurrentPosi);
+            } else {
+                Log.e(TAG, "removeToCollect: else" + mCurrentPosi);
+            }
+
+            //刷新界面
             mAdapter.notifyDataSetChanged();
             tvGalleryCount.setText(mCurrentPosi + 1 + "/" + views.size());
         }
     }
 
     //收藏当前的图片
-    private void doCollect() {
+    private void addToCollect() {
+        //为当前的图片设置标题为当前的日期
+        images.get(mCurrentPosi).setTitle(JudgeUtils.getDateString());
+        //添加当前的图片信息到数据库中
         App.getDaoSession().getImageInfoDao().insert(images.get(mCurrentPosi));
     }
 
@@ -401,8 +438,10 @@ public class GalleryActivity extends BaseActivity
 
     @Override
     public void onPageSelected(int position) {
+        Log.e(TAG, "onPageSelected: ");
+        ToastUtils.showToast("当前index" + position);
         mCurrentPosi = position;
-        initCollect();
+        refreshCollectStatus();
         tvGalleryCount.setText(position + 1 + "/" + views.size());
     }
 
@@ -414,6 +453,23 @@ public class GalleryActivity extends BaseActivity
     @Override
     protected MvpBasePresenter bindPresenter() {
         return null;
+    }
+
+
+    public static void startActivity(Activity activity, String action, List<ImageInfo> imageInfos, int position) {
+        Intent intent = new Intent(activity, GalleryActivity.class);
+        intent.setAction(action);
+        intent.putExtra(KEY_IMAGEINFOS, (Serializable) imageInfos);
+        intent.putExtra(KEY_POSITION, position);
+        activity.startActivity(intent);
+    }
+
+    public static void startActivityForResult(Activity activity, int requestCode, String action, List<ImageInfo> imageInfos, int position) {
+        Intent intent = new Intent(activity, GalleryActivity.class);
+        intent.setAction(action);
+        intent.putExtra(KEY_IMAGEINFOS, (Serializable) imageInfos);
+        intent.putExtra(KEY_POSITION, position);
+        activity.startActivityForResult(intent, requestCode);
     }
 
 

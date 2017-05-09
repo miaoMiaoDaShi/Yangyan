@@ -67,21 +67,6 @@ public class Presenter extends BasePresenter<Model, ImageListView> {
                         } else {
                             getView().showError(throwable);
                         }
-
-//                        //加载套图
-//                        if (TextUtils.equals(Model.TYPE_PARTICULARS, type)) {
-//                            getView().loadGalleryError(throwable);
-//                        } else {
-//                            if (TextUtils.equals(Model.TYPE_COLLECT, type) &&
-//                                    TextUtils.equals(
-//                                            ConstantLoadData.NOT_HAVE_MORE_DATA,
-//                                            throwable.getMessage())) {
-//
-//                            } else {
-//
-//                            }
-//
-//                        }
                     }
 
                     @Override

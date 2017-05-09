@@ -1,18 +1,17 @@
 package com.xxp.yangyan.pro.splash.view;
 
 import android.Manifest;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
-import com.orhanobut.logger.Logger;
 import com.tapadoo.alerter.Alerter;
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.mvp.view.MvpLceView;
@@ -21,7 +20,6 @@ import com.xxp.yangyan.pro.base.BaseActivity;
 import com.xxp.yangyan.pro.entity.SplashInfo;
 import com.xxp.yangyan.pro.listener.RequestPermisListener;
 import com.xxp.yangyan.pro.splash.presenter.Presenter;
-import com.xxp.yangyan.pro.utils.ActivityManager;
 import com.xxp.yangyan.pro.utils.IOUtils;
 import com.xxp.yangyan.pro.utils.JudgeUtils;
 import com.xxp.yangyan.pro.utils.SettingUtils;
@@ -31,7 +29,6 @@ import com.xxp.yangyan.pro.view.CircleProgressbar;
 
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,9 +37,7 @@ import butterknife.OnClick;
 public class SplashActivity extends BaseActivity<Presenter>
         implements Animation.AnimationListener, MvpLceView<SplashInfo> {
 
-    //倒计时
-    @BindView(R.id.cpbSplash)
-    CircleProgressbar cpbSplash;
+    private static CircleProgressbar cpbSplash;
     @BindView(R.id.activity_splash)
     View splashView;
     private Timer timer;
@@ -51,11 +46,38 @@ public class SplashActivity extends BaseActivity<Presenter>
     //设置壁纸
     private boolean isFristOnClick = true;
 
-    private int mTime = 180;
+    //发送消息的次数
+    private  int tiem = 180;
+    //发送消息的延时
+    private  final long DELAYMILLIS = 50;
+
+
+    private static final int WHAT_START_COUNT_DOWN = 0x11;
+
+    private static final int WHAT_PAUSE_COUNT_DOWN = 0x12;
 
     private long exitTime;
     //启动图片的存储名字
     private final String SPLASH_IMG_NAME = "bg_splash.png";
+
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case WHAT_PAUSE_COUNT_DOWN:
+                    break;
+                case WHAT_START_COUNT_DOWN:
+                    if (tiem <= 0) {
+                        goMain();
+                    }
+                    cpbSplash.setProgress(tiem--);
+                    break;
+            }
+        }
+    };
+    private boolean isPause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +97,10 @@ public class SplashActivity extends BaseActivity<Presenter>
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        cpbSplash = (CircleProgressbar) findViewById(R.id.cpbSplash);
+        cpbSplash.setMaxProgress(tiem);
+        cpbSplash.setProgress(tiem);
     }
 
 
@@ -117,44 +143,27 @@ public class SplashActivity extends BaseActivity<Presenter>
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(2000);
         splashView.setAnimation(alphaAnimation);
-
-        ScaleAnimation scaleAnimation = new ScaleAnimation(3.5f, 1, 3.5f, 1,
-                UIUtils.getWidthAndHeight()[0] / 2,
-                UIUtils.getWidthAndHeight()[1] / 2);
-        scaleAnimation.setDuration(1000);
-        scaleAnimation.setAnimationListener(this);
-        splashView.setAnimation(scaleAnimation);
+        alphaAnimation.setAnimationListener(this);
     }
 
-
-    //倒计时时间开始
-    private void startTimer() {
-        cpbSplash.setMaxProgress(mTime);
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                UIUtils.onUIThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        cpbSplash.setProgress(mTime--);
-                        if (mTime == -1) {
-                            goMain();
-                        }
-                    }
-                });
-            }
-        }, 0, 50);
-    }
 
     @Override
     public void onAnimationStart(Animation animation) {
-        startTimer();
+
     }
 
+    //在动画结束后,开始计时
     @Override
     public void onAnimationEnd(Animation animation) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isPause) {
+                    mHandler.sendEmptyMessage(WHAT_START_COUNT_DOWN);
+                }
+                mHandler.postDelayed(this, DELAYMILLIS);
+            }
+        }, DELAYMILLIS);
     }
 
     @Override
@@ -173,7 +182,6 @@ public class SplashActivity extends BaseActivity<Presenter>
 
     //下载新的壁纸
     private void downloadNewImage(final String path, final String url) {
-        Logger.e("开始下载新的图片");
         requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new RequestPermisListener() {
             @Override
             public void onGranted() {
@@ -181,7 +189,6 @@ public class SplashActivity extends BaseActivity<Presenter>
                     @Override
                     public void onSuccess(String t) {
                         super.onSuccess(t);
-                        Logger.e("下载成功");
                     }
                 });
             }
@@ -207,9 +214,9 @@ public class SplashActivity extends BaseActivity<Presenter>
 
     //到主界面
     private void goMain() {
-        startActivity(new Intent(UIUtils.getContext(), MainActivity.class));
+        MainActivity.startActivity(this);
         finish();
-        timer.cancel();
+        isPause = true;
     }
 
 
@@ -238,7 +245,6 @@ public class SplashActivity extends BaseActivity<Presenter>
     @Override
     public void showData(SplashInfo data) {
         if (JudgeUtils.isSplashImgUpdate(data.getDate())) {
-            Logger.e("图片更换了");
             //图片跟换了
             downloadNewImage(splashImgPath, data.getSplashUrl());
         } else setDownloadImage();
@@ -249,9 +255,10 @@ public class SplashActivity extends BaseActivity<Presenter>
         return new Presenter();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+        isPause = true;
     }
 }

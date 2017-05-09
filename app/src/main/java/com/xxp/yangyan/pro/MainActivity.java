@@ -1,5 +1,7 @@
 package com.xxp.yangyan.pro;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -97,7 +99,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -116,13 +118,12 @@ public class MainActivity extends BaseActivity implements
     private void initView() {
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle =
-                new ActionBarDrawerToggle(this,drawerLayout,toolbar,
-                        R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+                new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         myOnClick = new MyOnClick();
-       // getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         ((RadioButton) radiogroup.getChildAt(0)).setChecked(true);
         for (int i = 0; i < radiogroup.getChildCount(); i++) {
             RadioButton radioButton = (RadioButton) radiogroup.getChildAt(i);
@@ -247,6 +248,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected MvpBasePresenter bindPresenter() {
         return null;
+    }
+
+    public static void startActivity(Activity activity) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
     }
 
 }
