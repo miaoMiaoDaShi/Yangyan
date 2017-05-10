@@ -8,27 +8,43 @@ package com.xxp.yangyan.pro.entity;
  */
 
 public class BannerInfo {
-    //轮播图显示的图片
-    private String imgUrl;
-    //轮播图的点击的连接
-    private String link;
+    private String content;
+    private String imageUrl;
+    /**
+     * html : false
+     */
 
-    public BannerInfo() {
+    private boolean html;
+
+    public String getContent() {
+        return content;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public String getLink() {
-        return link;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    @Override
+    public String toString() {
+        return "BannerInfo{" +
+                "content='" + content + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
+
+    public boolean isHtml() {
+        return html;
+    }
+
+    public void setHtml(boolean html) {
+        this.html = html;
     }
 }

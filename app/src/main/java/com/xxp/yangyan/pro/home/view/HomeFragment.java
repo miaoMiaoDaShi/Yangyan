@@ -21,6 +21,7 @@ import com.xxp.yangyan.pro.api.MyApi;
 import com.xxp.yangyan.pro.banner.BannerView;
 import com.xxp.yangyan.pro.banner.IBannerPrepare;
 import com.xxp.yangyan.pro.base.BaseRefreshLayoutFragment;
+import com.xxp.yangyan.pro.entity.BannerInfo;
 import com.xxp.yangyan.pro.entity.HomeData;
 import com.xxp.yangyan.pro.home.presenter.Presenter;
 import com.xxp.yangyan.pro.imageList.view.ImageLIstActivity;
@@ -77,6 +78,7 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
     RelativeLayout homeRoot;
 
     private List<ImageView> views;
+    private List<BannerInfo> mBannerInfos;
 
     private boolean xxp = false;
     //谷歌的刷新空间
@@ -112,7 +114,18 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
         bannerView.setBannerOnclickListener(new BannerView.OnClickListener() {
             @Override
             public void onClick(int position) {
-                ToastUtils.showToast("点击" + position);
+                //banner的点击处理,我这里分为两种情况
+                if (mBannerInfos.isEmpty()) {
+                    return;
+                } else {
+                    if (mBannerInfos.get(position).isHtml()) {
+                        // TODO: 2017/5/10  到web页面
+                        ToastUtils.showToast("到连接为" + mBannerInfos.get(position).getContent() + "的页面");
+                    } else {
+                        // TODO: 2017/5/10 到Activity页面
+                        ToastUtils.showToast("到识别号为" + mBannerInfos.get(position).getContent() + "的套图页面");
+                    }
+                }
             }
         });
 
@@ -156,11 +169,11 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
     }
 
 
-    public void setbannerImage(List<String> urls) {
+    public void setbannerImage(List<BannerInfo> urls) {
         //设置banner
         for (int i = 1; i <= views.size(); i++) {
             GlideUtils.loadImageView(this,
-                    MyApi.MY_BASE_URL + urls.get(i - 1),
+                    MyApi.MY_BASE_URL + urls.get(i - 1).getImageUrl(),
                     views.get(i - 1));
         }
     }
@@ -235,7 +248,8 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
             });
             builder.show();
         } else {
-            setbannerImage(data.getBanner());
+            mBannerInfos = data.getBannerInfo();
+            setbannerImage(mBannerInfos);
             setNotice(data.getNotice());
             setPlateImage(data.getPush());
             setAnimeImage(data.getDongman());

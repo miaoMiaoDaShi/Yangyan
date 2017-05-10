@@ -9,30 +9,18 @@ import java.util.List;
 public class HomeData extends DataBean {
 
     /**
-     * banner : ["image/banner_1_20170507.png","image/banner_2_20170507.png","image/banner_3_20170507.png","image/banner_4_20170507.png","image/banner_5_20170507.png"]
-     * banner_link : ["http://m.xxxiao.com/133334","http://m.xxxiao.com/120213","http://m.xxxiao.com/133334","http://m.xxxiao.com/133334","http://m.xxxiao.com/133334"]
-     * bannerLink : ["image//web/banner/banner_1.html","image//web/banner/banner_1.html","image//web/banner/banner_1.html","image//web/banner/banner_1.html"]
-     * push : ["image/push_1_20170507.png","image/push_2_20170507.png","image/push_3_20170507.png"]
+     * bannerInfo : [{"content":"http://m.xxxiao.com/133334","imageUrl":"image/banner_1_20170507.png"},{"content":"http://m.xxxiao.com/133334","imageUrl":"image/banner_2_20170507.png"},{"content":"http://m.xxxiao.com/133334","imageUrl":"image/banner_3_20170507.png"},{"content":"http://m.xxxiao.com/133334","imageUrl":"image/banner_4_20170507.png"},{"content":"http://m.xxxiao.com/133334","imageUrl":"image/banner_5_20170507.png"}]
      * dongman : ["image/dongman_1_20170507.png","image/dongman_2_20170507.png","image/dongman_3_20170507.png","image/dongman_4_20170507.png"]
-     * notice : 请大家及时反馈,使用中遇到的问题!如果你有什么意见或建议欢迎评论！
      * notUseVersion : 1.0
+     * notice : 请大家及时反馈,使用中遇到的问题!如果你有什么意见或建议欢迎评论！
+     * push : ["image/push_1_20170507.png","image/push_2_20170507.png","image/push_3_20170507.png"]
      */
 
-    private String notice;
     private String notUseVersion;
-    private List<String> banner;
-    private List<String> banner_link;
-    private List<String> bannerLink;
-    private List<String> push;
+    private String notice;
+    private List<BannerInfo> bannerInfo;
     private List<String> dongman;
-
-    public String getNotice() {
-        return notice;
-    }
-
-    public void setNotice(String notice) {
-        this.notice = notice;
-    }
+    private List<String> push;
 
     public String getNotUseVersion() {
         return notUseVersion;
@@ -42,36 +30,20 @@ public class HomeData extends DataBean {
         this.notUseVersion = notUseVersion;
     }
 
-    public List<String> getBanner() {
-        return banner;
+    public String getNotice() {
+        return notice;
     }
 
-    public void setBanner(List<String> banner) {
-        this.banner = banner;
+    public void setNotice(String notice) {
+        this.notice = notice;
     }
 
-    public List<String> getBanner_link() {
-        return banner_link;
+    public List<BannerInfo> getBannerInfo() {
+        return bannerInfo;
     }
 
-    public void setBanner_link(List<String> banner_link) {
-        this.banner_link = banner_link;
-    }
-
-    public List<String> getBannerLink() {
-        return bannerLink;
-    }
-
-    public void setBannerLink(List<String> bannerLink) {
-        this.bannerLink = bannerLink;
-    }
-
-    public List<String> getPush() {
-        return push;
-    }
-
-    public void setPush(List<String> push) {
-        this.push = push;
+    public void setBannerInfo(List<BannerInfo> bannerInfo) {
+        this.bannerInfo = bannerInfo;
     }
 
     public List<String> getDongman() {
@@ -82,16 +54,12 @@ public class HomeData extends DataBean {
         this.dongman = dongman;
     }
 
-    @Override
-    public String toString() {
-        return "HomeData{" +
-                "notice='" + notice + '\'' +
-                ", notUseVersion='" + notUseVersion + '\'' +
-                ", banner=" + banner +
-                ", banner_link=" + banner_link +
-                ", bannerLink=" + bannerLink +
-                ", push=" + push +
-                ", dongman=" + dongman +
-                '}';
+    public List<String> getPush() {
+        return push;
     }
+
+    public void setPush(List<String> push) {
+        this.push = push;
+    }
+
 }

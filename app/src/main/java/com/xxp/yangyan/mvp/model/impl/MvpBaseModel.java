@@ -9,5 +9,8 @@ import com.xxp.yangyan.mvp.model.MvpModel;
  * Description :
  */
 
-public  class MvpBaseModel implements MvpModel {
+public  interface  MvpBaseModel extends MvpModel {
+    //获取数据,无参式获取数据
+    //参数页数
+
 }

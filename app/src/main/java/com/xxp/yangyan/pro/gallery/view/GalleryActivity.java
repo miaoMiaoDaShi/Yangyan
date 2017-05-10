@@ -319,7 +319,8 @@ public class GalleryActivity extends BaseActivity
         } else {
             removeToCollect();
         }
-        // TODO: 2017/5/9  
+        // TODO: 2017/5/9
+        //视图集合为空了,也没必要再刷新收藏的状态
         if (views.isEmpty()) {
             return;
         }

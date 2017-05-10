@@ -35,7 +35,6 @@ public class AnalysisHTML {
                 image.setCatalogue(catalogue);
                 image.setImgUrl(imgUrl);
                 image.setLink(link.replace(XxxiaoApi.MEINV_BASE_URL, ""));
-
                 images.add(image);
             }
 
