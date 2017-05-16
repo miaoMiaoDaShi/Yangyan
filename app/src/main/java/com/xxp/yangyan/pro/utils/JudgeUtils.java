@@ -1,5 +1,6 @@
 package com.xxp.yangyan.pro.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -47,7 +48,7 @@ public class JudgeUtils {
     //判断是SplashImg否有更新
     public static boolean isSplashImgUpdate(String date) {
         String saveDate = getSP().getString("splashImg", "");
-        if (saveDate.equals(date)) {
+        if (TextUtils.equals(saveDate,date)) {
             return false;
         } else {
             PreferenceUtils.getEditor().putString("splashImg", date);

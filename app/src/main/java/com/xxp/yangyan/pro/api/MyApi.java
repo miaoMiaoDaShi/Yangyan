@@ -16,7 +16,10 @@ import rx.Observable;
 
 public interface MyApi {
     //我的http://xxpbox.cn/app/yangyan/     http://192.168.191.1/
-    String MY_BASE_URL = "http://xxpbox.cn/app/yangyan/";
+    //http://yangyan-1252246683.cosgz.myqcloud.com/yangyan/splashImg
+    //http://yangyan-1252246683.cosgz.myqcloud.com/yangyan/ClassifyInfo
+    //http://yangyan-1252246683.cosgz.myqcloud.com/yangyan/homePage
+    String MY_BASE_URL = "http://yangyan-1252246683.cosgz.myqcloud.com/yangyan/";
 
     //获得软件首页的数据
     @GET("homePage")
@@ -27,6 +30,6 @@ public interface MyApi {
     Observable<SplashInfo> getSplashPage();
 
     //获得分类信息
-    @GET("categoryInfo")
+    @GET("classifyInfo")
     Observable<ClassifyInfoData> getCategoryPage();
 }

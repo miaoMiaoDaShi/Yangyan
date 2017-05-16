@@ -11,6 +11,7 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="android:colorForeground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/statusbar</item>
     </style>
 
     <style name="SplashActivityTheme" parent="AppTheme">

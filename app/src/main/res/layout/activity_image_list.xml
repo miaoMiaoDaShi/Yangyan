@@ -38,7 +38,7 @@
             android:paddingBottom="10dp"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/tv_title"

@@ -1,34 +1,27 @@
 package com.xxp.yangyan.pro.splash.view;
 
-import android.Manifest;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
-import com.kymjs.rxvolley.RxVolley;
-import com.kymjs.rxvolley.client.HttpCallback;
 import com.tapadoo.alerter.Alerter;
 import com.xxp.yangyan.R;
 import com.xxp.yangyan.mvp.view.MvpLceView;
 import com.xxp.yangyan.pro.MainActivity;
 import com.xxp.yangyan.pro.base.BaseActivity;
 import com.xxp.yangyan.pro.entity.SplashInfo;
-import com.xxp.yangyan.pro.listener.RequestPermisListener;
 import com.xxp.yangyan.pro.splash.presenter.Presenter;
 import com.xxp.yangyan.pro.utils.IOUtils;
 import com.xxp.yangyan.pro.utils.JudgeUtils;
 import com.xxp.yangyan.pro.utils.SettingUtils;
-import com.xxp.yangyan.pro.utils.ToastUtils;
 import com.xxp.yangyan.pro.utils.UIUtils;
 import com.xxp.yangyan.pro.view.CircleProgressbar;
-
-import java.util.List;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,19 +30,18 @@ import butterknife.OnClick;
 public class SplashActivity extends BaseActivity<Presenter>
         implements Animation.AnimationListener, MvpLceView<SplashInfo> {
 
+    private static final String TAG = "SplashActivity";
     private static CircleProgressbar cpbSplash;
     @BindView(R.id.activity_splash)
     View splashView;
-    private Timer timer;
-    //Splash的背景的路径
-    private String splashImgPath;
+
     //设置壁纸
     private boolean isFristOnClick = true;
 
     //发送消息的次数
-    private  int tiem = 180;
+    private int tiem = 180;
     //发送消息的延时
-    private  final long DELAYMILLIS = 50;
+    private final long DELAYMILLIS = 50;
 
 
     private static final int WHAT_START_COUNT_DOWN = 0x11;
@@ -57,9 +49,10 @@ public class SplashActivity extends BaseActivity<Presenter>
     private static final int WHAT_PAUSE_COUNT_DOWN = 0x12;
 
     private long exitTime;
+    //Splash的背景的路径
+    private String splashImgPath;
     //启动图片的存储名字
     private final String SPLASH_IMG_NAME = "bg_splash.png";
-
 
     private Handler mHandler = new Handler() {
         @Override
@@ -84,7 +77,7 @@ public class SplashActivity extends BaseActivity<Presenter>
         super.onCreate(savedInstanceState);
         initView();
         startAnim();
-        loadBackground();
+        initData();
     }
 
     @Override
@@ -111,14 +104,13 @@ public class SplashActivity extends BaseActivity<Presenter>
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_splash:
-                if ((System.currentTimeMillis() - exitTime) > 2000) {
+                if ((System.currentTimeMillis() - exitTime) > 1000) {
                     exitTime = System.currentTimeMillis();
                 } else {
                     if (isFristOnClick) {
                         isFristOnClick = false;
                         //设置壁纸
                         SettingUtils.setWallpaper(UIUtils.DrawableToBitmap(splashView.getBackground()));
-
                     }
                 }
                 break;
@@ -131,10 +123,10 @@ public class SplashActivity extends BaseActivity<Presenter>
     }
 
 
-    private void loadBackground() {
+    private void initData() {
         splashImgPath = IOUtils.getSDPath() + SPLASH_IMG_NAME;
-        setDownloadImage();
         presenter.loadData();
+
     }
 
 
@@ -171,44 +163,14 @@ public class SplashActivity extends BaseActivity<Presenter>
     }
 
     //设置下载的壁纸
-    private void setDownloadImage() {
-        Drawable drawable = getLocalImage();
+    private void setLocalImage() {
+        //返回本地的存储的Splash的背景图片
+        Drawable drawable = Drawable.createFromPath(splashImgPath);
         if (drawable != null) {
             splashView.setBackground(drawable);
         } else {
-            setDefaultBackground();
+            splashView.setBackground(UIUtils.getDrawable(R.drawable.bg_splash));
         }
-    }
-
-    //下载新的壁纸
-    private void downloadNewImage(final String path, final String url) {
-        requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new RequestPermisListener() {
-            @Override
-            public void onGranted() {
-                RxVolley.download(path, url, null, new HttpCallback() {
-                    @Override
-                    public void onSuccess(String t) {
-                        super.onSuccess(t);
-                    }
-                });
-            }
-
-            @Override
-            public void onDenide(List<String> permissions) {
-                ToastUtils.showLongToast(getString(R.string.permission_error_sd));
-            }
-        });
-
-    }
-
-    //返回本地的存储的Splash的背景图片
-    private Drawable getLocalImage() {
-        return Drawable.createFromPath(splashImgPath);
-    }
-
-    //设置默认的壁纸
-    private void setDefaultBackground() {
-        splashView.setBackground(UIUtils.getDrawable(R.mipmap.bg_splash));
     }
 
 
@@ -233,7 +195,7 @@ public class SplashActivity extends BaseActivity<Presenter>
     @Override
     public void showError(Throwable throwable) {
         //如果网络访问失败设置当前储存卡的壁纸
-        setDownloadImage();
+        setLocalImage();
         Alerter
                 .create(this)
                 .setBackgroundColor(R.color.colorPrimary)
@@ -246,8 +208,11 @@ public class SplashActivity extends BaseActivity<Presenter>
     public void showData(SplashInfo data) {
         if (JudgeUtils.isSplashImgUpdate(data.getDate())) {
             //图片跟换了
-            downloadNewImage(splashImgPath, data.getSplashUrl());
-        } else setDownloadImage();
+            Log.i(TAG, "showData: 下载新的启动图");
+            IOUtils.downloadNewImage(splashImgPath, data.getSplashUrl());
+        } else {
+            setLocalImage();
+        }
     }
 
     @Override

@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:background="@mipmap/bg_loading_a"/>
+                android:background="@drawable/bg_loading_a"/>
         </RelativeLayout>
 
         <LinearLayout

@@ -1,5 +1,7 @@
 package com.xxp.yangyan.pro.home.presenter;
 
+import android.util.Log;
+
 import com.xxp.yangyan.pro.base.BasePresenter;
 import com.xxp.yangyan.pro.entity.HomeData;
 import com.xxp.yangyan.pro.home.model.Model;
@@ -18,6 +20,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class Presenter<V> extends BasePresenter<Model, HomeFragment> {
+    private static final String TAG = "Presenter";
     public Presenter() {
     }
 
@@ -44,6 +47,7 @@ public class Presenter<V> extends BasePresenter<Model, HomeFragment> {
 
                     @Override
                     public void onNext(HomeData homeData) {
+                        Log.i(TAG, "onNext: " +homeData.toString());
                         getView().showData(homeData);
                     }
                 });

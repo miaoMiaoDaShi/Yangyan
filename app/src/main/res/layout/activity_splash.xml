@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@mipmap/ic_bottom"
+        android:background="@drawable/ic_bottom"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -70,7 +70,7 @@
         android:layout_alignParentRight="true"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:color_done="@color/red"
+        app:color_done="@color/colorPrimary"
         app:color_undone="#50ffffff"
         app:ring_width="5" />
 

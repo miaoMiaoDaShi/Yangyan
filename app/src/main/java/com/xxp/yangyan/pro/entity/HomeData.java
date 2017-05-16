@@ -62,4 +62,14 @@ public class HomeData extends DataBean {
         this.push = push;
     }
 
+    @Override
+    public String toString() {
+        return "HomeData{" +
+                "notUseVersion='" + notUseVersion + '\'' +
+                ", notice='" + notice + '\'' +
+                ", bannerInfo=" + bannerInfo +
+                ", dongman=" + dongman +
+                ", push=" + push +
+                '}';
+    }
 }

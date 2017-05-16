@@ -38,10 +38,10 @@ public abstract class BaseActivity<P extends MvpBasePresenter> extends MvpActivi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityManager.addActivity(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        if(Build.VERSION.SDK_INT>=21){
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        if(Build.VERSION.SDK_INT>=21){
+//            getWindow().setStatusBarColor(Color.TRANSPARENT);
+//        }
         setContentView(getLayoutId());
         ButterKnife.bind(this);
 

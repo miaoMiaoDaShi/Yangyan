@@ -32,7 +32,7 @@
     <RelativeLayout
         android:paddingTop="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
-        android:background="@mipmap/bg_my"
+        android:background="@drawable/bg_my"
         android:layout_height="250dp"
         android:id="@+id/relativeLayout2"
         android:layout_alignParentTop="true"
@@ -43,7 +43,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="10dp"
-            android:src="@mipmap/ic_exit"/>
+            android:src="@drawable/ic_exit"/>
         <com.xxp.yangyan.pro.view.WaveView
             android:id="@+id/waveview"
             android:layout_alignParentBottom="true"
@@ -94,7 +94,7 @@
                     android:padding="10dp"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@mipmap/ic_integral"
+                    android:src="@drawable/ic_integral"
                     app:civ_border_width="5dp"
                     app:civ_border_color="@color/red"/>
                 <TextView
@@ -117,7 +117,7 @@
                     android:padding="10dp"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@mipmap/ic_collect"
+                    android:src="@drawable/ic_collect"
                     app:civ_border_width="5dp"
                     app:civ_border_color="@color/red"/>
                 <TextView

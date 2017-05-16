@@ -28,4 +28,12 @@ public class SplashInfo extends DataBean {
     public void setSplashUrl(String splashUrl) {
         this.splashUrl = splashUrl;
     }
+
+    @Override
+    public String toString() {
+        return "SplashInfo{" +
+                "date='" + date + '\'' +
+                ", splashUrl='" + splashUrl + '\'' +
+                '}';
+    }
 }

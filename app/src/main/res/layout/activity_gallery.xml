@@ -42,7 +42,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_love"/>
+        android:src="@drawable/ic_love"/>
     <RelativeLayout
         android:id="@+id/rl_topBar"
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
             android:layout_marginLeft="-10dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:src="@mipmap/ic_back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/tv_galleryCount"
@@ -100,7 +100,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="3dp"
-                android:src="@mipmap/ic_love" />
+                android:src="@drawable/ic_love" />
 
             <TextView
                 android:id="@+id/tv_collect"
@@ -126,7 +126,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="3dp"
-                android:src="@mipmap/ic_download" />
+                android:src="@drawable/ic_download" />
 
             <TextView
                 android:id="@+id/tv_download"
@@ -151,7 +151,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="3dp"
-                android:src="@mipmap/ic_set_wallpaper" />
+                android:src="@drawable/ic_set_wallpaper" />
 
             <TextView
                 android:id="@+id/tv_setwallpaper"

@@ -26,7 +26,7 @@
         android:layout_centerVertical="true"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_more"/>
+        android:src="@drawable/ic_more"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

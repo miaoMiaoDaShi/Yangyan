@@ -229,6 +229,7 @@ public class HomeFragment extends BaseRefreshLayoutFragment<Presenter>
 
     @Override
     public void showError(Throwable throwable) {
+        Log.e(TAG, "showError: ", throwable);
         loadError();
     }
 

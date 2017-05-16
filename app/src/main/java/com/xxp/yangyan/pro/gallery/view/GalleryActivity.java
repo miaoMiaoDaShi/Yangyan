@@ -159,12 +159,12 @@ public class GalleryActivity extends BaseActivity
         //如果集合不为空,则代表该图片为收藏状态
         isCollect = !imageInfos.isEmpty();
         if (isCollect) {
-            ivImgLove.setImageResource(R.mipmap.ic_loved);
-            ivCollect.setImageResource(R.mipmap.ic_loved);
+            ivImgLove.setImageResource(R.drawable.ic_loved);
+            ivCollect.setImageResource(R.drawable.ic_loved);
             tvCollect.setText("取消收藏");
         } else {
-            ivImgLove.setImageResource(R.mipmap.ic_love);
-            ivCollect.setImageResource(R.mipmap.ic_love);
+            ivImgLove.setImageResource(R.drawable.ic_love);
+            ivCollect.setImageResource(R.drawable.ic_love);
             tvCollect.setText("收藏");
         }
 

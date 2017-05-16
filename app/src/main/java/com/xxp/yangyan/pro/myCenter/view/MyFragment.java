@@ -105,28 +105,28 @@ public class MyFragment extends BaseFragment<Presenter> {
         settings = new ArrayList<>();
 
         SettingInfo clear = new SettingInfo();
-        clear.setImage(R.mipmap.ic_clear);
+        clear.setImage(R.drawable.ic_clear);
         clear.setTitle("清除缓存");
         clear.setCacheCount(GlideCacheUtil.getInstance().getCacheSize(App.getmContext()));
         settings.add(clear);
 
         SettingInfo collect = new SettingInfo();
-        collect.setImage(R.mipmap.ic_collect);
+        collect.setImage(R.drawable.ic_collect);
         collect.setTitle("我的收藏");
         settings.add(collect);
 
 //        SettingInfo setting = new SettingInfo();
-//        setting.setImage(R.mipmap.ic_setting);
+//        setting.setImage(R.drawable.ic_setting);
 //        setting.setTitle("软件设置");
 //        settings.add(setting);
 
         SettingInfo update = new SettingInfo();
-        update.setImage(R.mipmap.ic_update);
+        update.setImage(R.drawable.ic_update);
         update.setTitle("检查更新");
         settings.add(update);
 
         SettingInfo about = new SettingInfo();
-        about.setImage(R.mipmap.ic_about);
+        about.setImage(R.drawable.ic_about);
         about.setTitle("关于我");
         settings.add(about);
 

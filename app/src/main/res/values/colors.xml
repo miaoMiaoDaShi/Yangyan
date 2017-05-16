@@ -5,6 +5,7 @@
     <color name="colorAccent">#fa0e56</color>
     <color name="red">#40fa0e56</color>
     <color name="colorgray">#eae6e8</color>
+    <color name="statusbar">#de0e6b</color>
     <color name="colorLoginButtonPressed">@color/redDark</color>
 
 

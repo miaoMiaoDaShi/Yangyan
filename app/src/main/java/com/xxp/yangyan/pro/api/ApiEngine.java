@@ -34,7 +34,7 @@ public class ApiEngine {
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .cache(cache)
+//                .cache(cache)
                 .build();
 
         apiRetrofit = new Retrofit
